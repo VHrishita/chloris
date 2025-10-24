@@ -161,7 +161,7 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-btn">← Back</a>
+  <a href="features.html" class="back-btn">← Back</a>
   <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
 
   <div class="container">
@@ -198,7 +198,7 @@
         <a href="#" class="social-icon">🌳</a>
         <a href="#" class="social-icon">🌱</a>
       </div>
-      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+     
     </div>
   </footer>
 
@@ -209,81 +209,74 @@
         name: 'Forest Ambience',
         icon: '🌲',
         description: 'Birds chirping, gentle wind through trees',
-        duration: '10:00'
+        src: 'sounds/forest.mp3'
       },
       {
         name: 'Rain Sounds',
         icon: '🌧️',
         description: 'Peaceful rainfall on leaves',
-        duration: '12:00'
+        src: 'sounds/rain.mp3'
       },
       {
         name: 'Ocean Waves',
         icon: '🌊',
         description: 'Calming waves on the shore',
-        duration: '15:00'
+        src: 'sounds/ocean.mp3'
       },
       {
         name: 'Jungle Sounds',
         icon: '🦜',
         description: 'Tropical birds and wildlife',
-        duration: '8:00'
+        src: 'sounds/jungle.mp3'
       },
       {
         name: 'Mountain Stream',
         icon: '💧',
         description: 'Flowing water over rocks',
-        duration: '20:00'
+        src: 'sounds/stream.mp3'
       },
       {
         name: 'Night Crickets',
         icon: '🦗',
         description: 'Evening cricket symphony',
-        duration: '30:00'
+        src: 'sounds/crickets.mp3'
       }
     ];
-
+    
     let currentSound = sounds[0];
     let isPlaying = false;
-    let audioContext = null;
-    let oscillator = null;
-    let gainNode = null;
-
+    let audioElement = new Audio(currentSound.src);
+    
     function displaySoundOptions() {
       const container = document.getElementById('soundOptions');
-      
       sounds.forEach((sound, index) => {
         const option = document.createElement('div');
         option.className = 'sound-option';
         if (index === 0) option.classList.add('active');
-        
+    
         option.innerHTML = `
           <div class="sound-option-icon">${sound.icon}</div>
           <div class="sound-option-name">${sound.name}</div>
         `;
-        
+    
         option.onclick = () => selectSound(sound, option);
         container.appendChild(option);
       });
     }
-
+    
     function selectSound(sound, element) {
-      if (isPlaying) {
-        stopSound();
-      }
-
+      stopSound();
       currentSound = sound;
-      
-      document.querySelectorAll('.sound-option').forEach(opt => {
-        opt.classList.remove('active');
-      });
+      audioElement.src = currentSound.src;
+    
+      document.querySelectorAll('.sound-option').forEach(opt => opt.classList.remove('active'));
       element.classList.add('active');
-
+    
       document.getElementById('soundVisual').textContent = sound.icon;
       document.getElementById('soundTitle').textContent = sound.name;
       document.getElementById('soundDescription').textContent = sound.description;
     }
-
+    
     function togglePlay() {
       if (isPlaying) {
         stopSound();
@@ -291,55 +284,29 @@
         playSound();
       }
     }
-
+    
     function playSound() {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioContext.createGain();
-        gainNode.connect(audioContext.destination);
-      }
-
-      oscillator = audioContext.createOscillator();
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(100 + Math.random() * 200, audioContext.currentTime);
-      
-      const lfo = audioContext.createOscillator();
-      lfo.frequency.setValueAtTime(0.5, audioContext.currentTime);
-      const lfoGain = audioContext.createGain();
-      lfoGain.gain.setValueAtTime(50, audioContext.currentTime);
-      
-      lfo.connect(lfoGain);
-      lfoGain.connect(oscillator.frequency);
-      
-      oscillator.connect(gainNode);
-      gainNode.gain.setValueAtTime(document.getElementById('volumeSlider').value / 500, audioContext.currentTime);
-      
-      oscillator.start();
-      lfo.start();
-
+      audioElement.play();
       isPlaying = true;
       document.getElementById('playBtn').textContent = '⏸️';
       document.getElementById('soundVisual').classList.add('playing');
     }
-
+    
     function stopSound() {
-      if (oscillator) {
-        oscillator.stop();
-        oscillator = null;
-      }
-
+      audioElement.pause();
+      audioElement.currentTime = 0;
       isPlaying = false;
       document.getElementById('playBtn').textContent = '▶️';
       document.getElementById('soundVisual').classList.remove('playing');
     }
-
+    
+    // Volume control
     document.getElementById('volumeSlider').addEventListener('input', function(e) {
-      if (gainNode) {
-        gainNode.gain.setValueAtTime(e.target.value / 500, audioContext.currentTime);
-      }
+      audioElement.volume = e.target.value / 100;
     });
-
+    
     displaySoundOptions();
-  </script>
+    </script>
+    
 </body>
 </html>

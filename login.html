@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Chloris</title>
+  <style>
+    body {
+      font-family: Poppins, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #8fbc8f;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 350px;
+      text-align: center;
+      color: #fff;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #2e7d32;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1b5e20;
+    }
+
+    .toggle {
+      margin-top: 1rem;
+      cursor: pointer;
+      color: #c8e6c9;
+    }
+
+    .toggle span {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="container">
+    <h2 id="formTitle">Login</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button id="submitBtn">Login</button>
+    <p class="toggle" id="toggleForm">Don't have an account? <span>Sign up</span></p>
+  </div>
+
+  <script type="module">
+    import { signUp, logIn, auth } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const formTitle = document.getElementById("formTitle");
+    const submitBtn = document.getElementById("submitBtn");
+    const toggleForm = document.getElementById("toggleForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    let isLogin = true;
+
+    toggleForm.addEventListener("click", () => {
+      isLogin = !isLogin;
+      formTitle.textContent = isLogin ? "Login" : "Sign Up";
+      submitBtn.textContent = isLogin ? "Login" : "Sign Up";
+      toggleForm.innerHTML = isLogin
+        ? `Don't have an account? <span>Sign up</span>`
+        : `Already have an account? <span>Login</span>`;
+    });
+
+    submitBtn.addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
+
+      try {
+        if (isLogin) {
+          await logIn(email, password);
+          alert("Login successful!");
+          window.location.href = "features.html";
+        } else {
+          await signUp(email, password);
+          alert("Account created successfully!");
+          window.location.href = "features.html";
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "features.html";
+      }
+    });
+  </script>
+</body>
+</html>

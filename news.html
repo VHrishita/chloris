@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Eco News</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        color: #2a7a4f;
+    }
+    .back-button {
+        display: inline-block;
+        margin: 10px 0;
+        padding: 10px 20px;
+        background-color: #2a7a4f;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background 0.3s;
+        cursor: pointer;
+    }
+    .back-button:hover {
+        background-color: #1b5734;
+    }
+    .news-container-wrapper {
+        max-height: 70vh; /* height of scrollable area */
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+    .news-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 10px;
+    }
+    .news-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+    .news-card:hover {
+        transform: translateY(-5px);
+    }
+    .news-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1b3b2a;
+        margin-bottom: 10px;
+    }
+    .news-description {
+        font-size: 14px;
+        color: #555555;
+    }
+    .news-date {
+        font-size: 12px;
+        color: #999999;
+        margin-top: 10px;
+    }
+    /* Optional: scrollbar styling */
+    .news-container-wrapper::-webkit-scrollbar {
+        width: 8px;
+    }
+    .news-container-wrapper::-webkit-scrollbar-thumb {
+        background-color: #2a7a4f;
+        border-radius: 4px;
+    }
+
+    /* Article view styles */
+    #articleView {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(240, 244, 248, 0.98);
+        overflow-y: auto;
+        padding: 30px;
+        box-sizing: border-box;
+    }
+    #articleContent {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    #articleContent h2 {
+        color: #2a7a4f;
+        margin-top: 0;
+    }
+    #articleContent p {
+        line-height: 1.6;
+        color: #333;
+        margin-bottom: 15px;
+    }
+</style>
+</head>
+<body>
+<h1>🌍 Global Eco News</h1>
+<a href="features.html" class="back-button">← Back to Home</a>
+
+<div class="news-container-wrapper" id="newsSection">
+    <div class="news-container" id="newsContainer">
+        <div class="news-card" data-index="0">
+            <div class="news-title">Major Reforestation Effort Launched in Amazon</div>
+            <div class="news-description">Countries in South America join forces to plant 50 million trees over the next year to combat deforestation.</div>
+            <div class="news-date">Oct 24, 2025</div>
+        </div>
+        <div class="news-card" data-index="1">
+            <div class="news-title">New Solar Farm Powers 100,000 Homes</div>
+            <div class="news-description">The world’s largest solar farm in Morocco begins operation, significantly reducing reliance on fossil fuels.</div>
+            <div class="news-date">Oct 23, 2025</div>
+        </div>
+        <div class="news-card" data-index="2">
+            <div class="news-title">Ocean Cleanup Project Removes 10,000 Tons of Plastic</div>
+            <div class="news-description">Innovative technology deployed in the Pacific Ocean successfully removes massive amounts of floating plastic debris.</div>
+            <div class="news-date">Oct 22, 2025</div>
+        </div>
+        <div class="news-card" data-index="3">
+            <div class="news-title">Electric Vehicles Reach Record Sales</div>
+            <div class="news-description">Global EV sales hit an all-time high as governments push for cleaner transportation options.</div>
+            <div class="news-date">Oct 21, 2025</div>
+        </div>
+        <div class="news-card" data-index="4">
+            <div class="news-title">Coral Reefs Show Signs of Recovery</div>
+            <div class="news-description">Marine biologists report positive regeneration in the Great Barrier Reef thanks to conservation efforts.</div>
+            <div class="news-date">Oct 20, 2025</div>
+        </div>
+        <div class="news-card" data-index="5">
+            <div class="news-title">Wind Energy Expansion Across Europe</div>
+            <div class="news-description">Several European countries increase investments in wind energy to reduce carbon emissions.</div>
+            <div class="news-date">Oct 19, 2025</div>
+        </div>
+    </div>
+</div>
+
+<!-- Article view -->
+<div id="articleView">
+    <button class="back-button" onclick="closeArticle()">← Back to News</button>
+    <div id="articleContent">
+        <h2 id="articleTitle"></h2>
+        <div id="articleBody"></div>
+    </div>
+</div>
+
+<script>
+const articles = [
+    {
+        title: "Major Reforestation Effort Launched in Amazon",
+        content: `<p>Countries in South America have joined forces to plant 50 million trees over the next year as part of a massive reforestation initiative aimed at combating deforestation and climate change. The project involves local communities, NGOs, and government agencies working together to restore degraded land.</p>
+                  <p>The effort is expected to create thousands of jobs, improve biodiversity, and absorb millions of tons of CO2 annually. Conservationists emphasize the importance of not only planting trees but also ensuring their survival over the long term.</p>
+                  <p>Experts are optimistic that similar large-scale initiatives worldwide could significantly contribute to reducing the effects of global warming and protecting critical ecosystems.</p>`
+    },
+    {
+        title: "New Solar Farm Powers 100,000 Homes",
+        content: `<p>The solar farm in Morocco can power 100,000 homes, significantly reducing reliance on fossil fuels. This is a major step in renewable energy adoption for the region.</p>
+                  <p>Officials state that the project will also generate thousands of jobs and encourage investment in clean energy infrastructure.</p>`
+    },
+    {
+        title: "Ocean Cleanup Project Removes 10,000 Tons of Plastic",
+        content: `<p>An ambitious ocean cleanup project has successfully removed 10,000 tons of plastic from the Pacific Ocean. Engineers used advanced floating barriers to collect plastic without harming marine life.</p>
+                  <p>Environmentalists hope that this will inspire similar efforts globally to combat ocean pollution.</p>`
+    },
+    {
+        title: "Electric Vehicles Reach Record Sales",
+        content: `<p>Global electric vehicle sales have reached an all-time high, driven by government incentives and growing environmental awareness. Analysts predict continued growth in the EV market.</p>`
+    },
+    {
+        title: "Coral Reefs Show Signs of Recovery",
+        content: `<p>Marine biologists report positive regeneration in the Great Barrier Reef thanks to conservation efforts, including reduced fishing and improved water quality.</p>`
+    },
+    {
+        title: "Wind Energy Expansion Across Europe",
+        content: `<p>European countries are increasing investment in wind energy infrastructure to reduce carbon emissions and transition to renewable energy. Large-scale wind farms are being planned across several regions.</p>`
+    }
+];
+
+// Add click event to each news card
+const newsCards = document.querySelectorAll('.news-card');
+newsCards.forEach(card => {
+    card.addEventListener('click', () => {
+        const index = card.getAttribute('data-index');
+        document.getElementById('articleTitle').innerText = articles[index].title;
+        document.getElementById('articleBody').innerHTML = articles[index].content;
+        document.getElementById('newsSection').style.display = 'none';
+        document.getElementById('articleView').style.display = 'block';
+    });
+});
+
+// Close article view
+function closeArticle() {
+    document.getElementById('articleView').style.display = 'none';
+    document.getElementById('newsSection').style.display = 'block';
+}
+</script>
+</body>
+</html>

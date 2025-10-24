@@ -3,9 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plant Growth Tracker - GreenLife Tracker</title>
+  <title>Plant Growth Tracker - Chloris</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyByp9iWZ0ZsiDIvi84JurZUJohUfPMpNbY",
+  authDomain: "chloris-bc7c7.firebaseapp.com",
+  projectId: "chloris-bc7c7",
+  storageBucket: "chloris-bc7c7.appspot.com",
+  messagingSenderId: "198937142609",
+  appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
+};
+
+// Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(); // Firestore instance
+</script>
+
   <style>
     .plant-form {
       max-width: 600px;
@@ -23,7 +42,8 @@
       font-weight: 600;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
       width: 100%;
       padding: 12px 20px;
       border: 2px solid var(--glass-border);
@@ -33,7 +53,8 @@
       transition: all 0.3s ease;
     }
 
-    .form-group input:focus {
+    .form-group input:focus,
+    .form-group select:focus {
       outline: none;
       border-color: var(--sage-green);
       background: white;
@@ -110,12 +131,12 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-btn">← Back</a>
+  <a href="features.html" class="back-btn">← Back</a>
   <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
 
   <div class="container">
     <div class="page-header">
-      <h1>🌳 Plant Growth Tracker</h1>
+      <h1>🌱 Plant Growth Tracker</h1>
       <p>Monitor your plants and watch them thrive</p>
     </div>
 
@@ -137,7 +158,48 @@
           <input type="number" id="currentHeight" placeholder="e.g., 25" min="0" step="0.1" required>
         </div>
 
-        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Add Plant 🌱</button>
+        <div class="form-group">
+          <label for="latitude">Latitude *</label>
+          <input type="number" step="0.00000001" id="latitude" placeholder="0.0000000" required>
+        </div>
+
+        <div class="form-group">
+          <label for="longitude">Longitude *</label>
+          <input type="number" step="0.00000001" id="longitude" placeholder="0.0000000" required>
+        </div>
+
+        <!-- Fancy location button like Wildlife Tracker -->
+        <button
+          type="button"
+          onclick="getLocation()"
+          style="
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 2px solid #2f5233; 
+            color: #2f5233;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            background: transparent;
+            cursor: pointer;
+            transition: 0.3s;
+          "
+          onmouseover="this.style.backgroundColor='#e6f2e6'"
+          onmouseout="this.style.backgroundColor='transparent'"
+        >
+          📍 Use My Current Location
+        </button>
+
+        <div class="form-group">
+          <label for="planted_date">Date Planted *</label>
+          <input type="date" id="planted_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="photo_url">Photo URL</label>
+          <input type="url" id="photo_url" placeholder="https://example.com/plant-photo.jpg">
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Log Plant 🌿</button>
       </form>
     </div>
 
@@ -152,11 +214,12 @@
         <a href="#" class="social-icon">🌳</a>
         <a href="#" class="social-icon">🌱</a>
       </div>
-      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+      <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
+
     </div>
   </footer>
 
-  <script src="app.js"></script>
   <script>
     let plants = JSON.parse(localStorage.getItem('plants')) || [];
 
@@ -169,7 +232,7 @@
         return;
       }
 
-      plants.forEach((plant, index) => {
+      plants.forEach((plant) => {
         const maxHeight = 100;
         const healthProgress = Math.min((plant.daysWatered / 30) * 100, 100);
         const heightProgress = Math.min((plant.currentHeight / maxHeight) * 100, 100);
@@ -222,6 +285,48 @@
     });
 
     displayPlants();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
+    });
+
+    function getLocation() {
+      const errorDiv = document.getElementById('errorMsg');
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            document.getElementById('latitude').value = position.coords.latitude.toFixed(8);
+            document.getElementById('longitude').value = position.coords.longitude.toFixed(8);
+          },
+          () => alert('Unable to get your location')
+        );
+      } else {
+        alert('Geolocation is not supported by this browser.');
+      }
+    }
+
+ ocument.addEventListener('DOMContentLoaded', ()=> {
+  document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
+});
+
+document.getElementById('plantForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+
+  const plantData = {
+    name: document.getElementById('plantName').value,
+    daysWatered: parseInt(document.getElementById('daysWatered').value) || 0,
+    currentHeight: parseFloat(document.getElementById('currentHeight').value) || 0,
+    latitude: parseFloat(document.getElementById('latitude').value) || 0,
+    longitude: parseFloat(document.getElementById('longitude').value) || 0,
+    planted_date: document.getElementById('planted_date').value,
+    photo_url: document.getElementById('photo_url').value || '',
+    created_at: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  db.collection('plants').add(plantData)
+    .then(()=> { alert('Plant logged successfully! 🌿'); document.getElementById('plantForm').reset(); })
+    .catch((err)=> { console.error(err); alert('Failed to log plant'); });
+});
   </script>
 </body>
 </html>

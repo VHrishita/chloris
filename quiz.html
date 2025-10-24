@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Eco Quiz - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --sage-green: #4f7942;
+      --dark-green: #2f5233;
+      --light-green: #b4d9b0;
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --white: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #c7f9cc, #80ed99, #57cc99);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: var(--dark-green);
+    }
+
+    /* Floating leaves */
+    .leaf {
+      position: absolute;
+      top: -50px;
+      font-size: 1.8rem;
+      opacity: 0.8;
+      animation: floatLeaves 10s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatLeaves {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Glassy quiz box */
+    main {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      max-width: 550px;
+      width: 90%;
+      text-align: center;
+      z-index: 2;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    #progressBarContainer {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    #progressBar {
+      height: 10px;
+      background: var(--sage-green);
+      width: 0%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--dark-green);
+      font-weight: 600;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button.option {
+      background: rgba(255, 255, 255, 0.7);
+      border: 2px solid var(--sage-green);
+      border-radius: 10px;
+      padding: 0.8rem;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--dark-green);
+      transition: all 0.3s ease;
+    }
+
+    button.option:hover {
+      background: var(--sage-green);
+      color: var(--white);
+      transform: scale(1.05);
+    }
+
+    #nextBtn {
+      background: var(--sage-green);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    #nextBtn:hover {
+      background: var(--dark-green);
+      transform: scale(1.05);
+    }
+
+    #result {
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+      font-weight: 600;
+      display: none;
+      color: var(--dark-green);
+    }
+
+    /* Back button */
+    #back-home {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid var(--glass-border);
+      color: var(--dark-green);
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    #back-home:hover {
+      background: rgba(255, 255, 255, 0.6);
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: #2f5233b0;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Back button -->
+  <button id="back-home" onclick="window.location.href='features.html'">← Back</button>
+
+  <!-- Floating leaves -->
+  <div class="leaf" style="left: 10%;">🍃</div>
+  <div class="leaf" style="left: 30%; animation-delay: 2s;">🌿</div>
+  <div class="leaf" style="left: 50%; animation-delay: 4s;">🍀</div>
+  <div class="leaf" style="left: 70%; animation-delay: 1s;">🌱</div>
+  <div class="leaf" style="left: 90%; animation-delay: 3s;">🍂</div>
+
+  <!-- Quiz Section -->
+  <main>
+    <h1>🌱 Daily Eco Quiz</h1>
+    <div id="progressBarContainer">
+      <div id="progressBar"></div>
+    </div>
+
+    <div id="quizBox">
+      <p class="question" id="question">Loading...</p>
+      <div class="options" id="options"></div>
+      <button id="nextBtn">Next</button>
+      <p id="result"></p>
+    </div>
+  </main>
+
+  <footer>Made by Group 17 for SDG 15 — Life on Land 🌿</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const quizData = [
+      {
+        question: "Which gas do plants absorb during photosynthesis?",
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        answer: "Carbon Dioxide",
+      },
+      {
+        question: "Which of these animals is found in rainforests?",
+        options: ["Polar Bear", "Koala", "Penguin", "Seal"],
+        answer: "Koala",
+      },
+      {
+        question: "Which renewable energy uses wind to generate power?",
+        options: ["Solar Energy", "Hydropower", "Wind Energy", "Geothermal"],
+        answer: "Wind Energy",
+      },
+      {
+        question: "Which color bin is usually used for recycling paper?",
+        options: ["Green", "Blue", "Red", "Yellow"],
+        answer: "Blue",
+      },
+      {
+        question: "Which part of a plant absorbs water from the soil?",
+        options: ["Stem", "Root", "Leaf", "Flower"],
+        answer: "Root",
+      },
+    ];
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultEl = document.getElementById("result");
+    const progressBar = document.getElementById("progressBar");
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = quizData[current];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      progressBar.style.width = ((current + 1) / quizData.length) * 100 + "%";
+      q.options.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.className = "option";
+        btn.onclick = () => selectAnswer(btn, q.answer);
+        optionsEl.appendChild(btn);
+      });
+      nextBtn.style.display = "none";
+    }
+
+    function selectAnswer(btn, correct) {
+      const options = document.querySelectorAll(".option");
+      options.forEach((b) => (b.disabled = true));
+      if (btn.textContent === correct) {
+        btn.style.background = "#4f7942";
+        btn.style.color = "white";
+        score++;
+      } else {
+        btn.style.background = "#ef4444";
+        btn.style.color = "white";
+      }
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    };
+
+    function showResult() {
+      optionsEl.style.display = "none";
+      questionEl.textContent = "🌿 Your Eco Awareness Score:";
+      nextBtn.style.display = "none";
+      resultEl.style.display = "block";
+      resultEl.textContent = `${score}/${quizData.length} correct!`;
+      if (score >= 3) {
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.7 },
+        });
+        resultEl.textContent += " 🎉 You're an Eco Hero!";
+      } else {
+        resultEl.textContent += " 🌱 Keep learning!";
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

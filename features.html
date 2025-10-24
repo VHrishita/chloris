@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenLife Tracker - Caring for Life on Land 🌳</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(143, 188, 143, 0.9), rgba(135, 206, 235, 0.8)),
+                  url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80') center/cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(45, 80, 22, 0.2) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+      animation: fadeInDown 1s ease;
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      color: white;
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.8rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 3rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .features {
+      padding: 4rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      color: var(--dark-green);
+      margin: 1rem 0;
+    }
+
+    .feature-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .feature-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>  
+
+  <section class="features">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 2.5rem; color: var(--dark-green); margin-bottom: 3rem;">Explore Our Features</h2>
+      <div class="features-grid">
+        <a href="plant-tracker.html" class="feature-card glass-card">
+          <div class="feature-icon">🌳</div>
+          <h3>Plant Growth Tracker</h3>
+          <p>Monitor and track your plant's growth journey with beautiful visualizations</p>
+        </a>
+
+        <a href="animal-tracker.html" class="feature-card glass-card">
+          <div class="feature-icon">🦏</div>
+          <h3>Animal Tracker</h3>
+          <p>Observe wildlife patterns and  discover the secrets of the animal kingdom</p>
+        </a>
+
+        <a href="biodiversity.html" class="feature-card glass-card">
+          <div class="feature-icon">🗺️</div>
+          <h3>Biodiversity Map</h3>
+          <p>Explore diverse ecosystems and wildlife locations around the world</p>
+        </a>
+
+
+        <a href="quiz.html" class="feature-card glass-card">
+          <div class="feature-icon">🧩</div>
+          <h3>Daily Eco Quiz</h3>
+          <p>Test your knowledge and learn something new each day!</p>
+        </a>
+
+        <a href="trash-sorter.html" class="feature-card glass-card">
+          <div class="feature-icon">🎮</div>
+          <h3>Mini Game</h3>
+          <p>Test your gaming skills</p>
+        </a>
+        
+        <a href="news.html" class="feature-card glass-card">
+          <div class="feature-icon">📰</div>
+          <h3>News letter</h3>
+          <p>Read about the latest news</p>
+        </a>
+
+        
+        <a href="eco-tips.html" class="feature-card glass-card">
+          <div class="feature-icon">💡</div>
+          <h3>Eco Tips</h3>
+          <p>Daily tips and advice for sustainable living and environmental care</p>
+        </a>
+
+        <a href="weather-advice.html" class="feature-card glass-card">
+          <div class="feature-icon">🌦️</div>
+          <h3>Weather Advice</h3>
+          <p>Get personalized environmental tips based on your local weather</p>
+        </a>
+
+        <a href="plant-health.html" class="feature-card glass-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Plant Health Detector</h3>
+          <p>Upload plant photos to get instant health assessments and care tips</p>
+        </a>
+
+        <a href="community-wall.html" class="feature-card glass-card">
+          <div class="feature-icon">🪴</div>
+          <h3>Community Wall</h3>
+          <p>Share and explore beautiful nature photography from our community</p>
+        </a>
+
+        <a href="leaderboard.html" class="feature-card glass-card">
+          <div class="feature-icon">🏆</div>
+          <h3>Eco Leaderboard</h3>
+          <p>See top contributors making a difference for our planet</p>
+        </a>
+
+        <a href="avatar-customizer.html" class="feature-card glass-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Avatar Customizer</h3>
+          <p>Personalize your eco-avatar and showcase your nature spirit</p>
+        </a>
+
+        <a href="nature-sounds.html" class="feature-card glass-card">
+          <div class="feature-icon">🎧</div>
+          <h3>Nature Sounds</h3>
+          <p>Relax with calming forest and rain soundscapes</p>
+        </a>
+
+        <a href="achievements.html" class="feature-card glass-card">
+          <div class="feature-icon">✨</div>
+          <h3>Achievements</h3>
+          <p>Unlock badges and celebrate your environmental milestones</p>
+        </a>
+
+        <a href="animal-stories.html" class="feature-card glass-card">
+          <div class="feature-icon">🦁</div>
+          <h3>Tales from the Wild</h3>
+          <p>Listen to wisdom and stories shared by our animal friends</p>
+        </a>
+
+        <a href="tree-stories.html" class="feature-card glass-card">
+          <div class="feature-icon">🌳</div>
+          <h3>Whispers of the Forest</h3>
+          <p>Ancient trees share their timeless wisdom and life stories</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
+
+    </div>
+  </footer>
+
+
+  <script type="module">
+    import { auth } from './firebase.js';
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      alert('You have been logged out.');
+      window.location.href = 'index.html';
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

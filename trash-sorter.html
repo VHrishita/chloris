@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🌿 Eco Games - Chloris</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --sage-green: #4f7942;
+  --dark-green: #2f5233;
+  --light-green: #b4d9b0;
+  --white: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #c7f9cc, #80ed99, #57cc99);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  color: var(--dark-green);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Floating leaves */
+.leaf {
+  position: absolute;
+  top: -50px;
+  font-size: 1.8rem;
+  opacity: 0.8;
+  animation: floatLeaves 10s linear infinite;
+  z-index: 1;
+}
+
+@keyframes floatLeaves {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Glassy main container */
+main {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  color: var(--dark-green);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Buttons */
+#menu button {
+  background: var(--sage-green);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Back buttons */
+.back-btn, .back-home {
+  background: var(--dark-green);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.back-btn:hover, .back-home:hover {
+  background: var(--sage-green);
+}
+
+/* Memory Game */
+#memoryGame, #mazeGame {
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.card {
+  background: rgba(255,255,255,0.7);
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid var(--sage-green);
+  transition: all 0.3s ease;
+}
+
+.card.flipped {
+  background: var(--light-green);
+  cursor: default;
+}
+
+/* Maze */
+#mazeCanvas {
+  border: 2px solid var(--sage-green);
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+/* Footer */
+footer {
+  position: absolute;
+  bottom: 15px;
+  font-size: 0.9rem;
+  color: #2f5233b0;
+  text-align: center;
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+<!-- Floating leaves -->
+<div class="leaf" style="left: 10%;">🍃</div>
+<div class="leaf" style="left: 30%; animation-delay: 2s;">🌿</div>
+<div class="leaf" style="left: 50%; animation-delay: 4s;">🍀</div>
+<div class="leaf" style="left: 70%; animation-delay: 1s;">🌱</div>
+<div class="leaf" style="left: 90%; animation-delay: 3s;">🍂</div>
+
+<main>
+  <h1>🌿 Eco Games</h1>
+  <button class="back-home" onclick="window.location.href='features.html'">← Back Home</button>
+
+  <!-- Menu -->
+  <div id="menu">
+    <button onclick="showGame('memory')">🐾 Wildlife Memory</button>
+    <button onclick="showGame('maze')">🌀 Eco Maze</button>
+  </div>
+
+  <!-- Memory Game -->
+  <div id="memoryGame">
+    <button class="back-btn" onclick="backToMenu()">← Back</button>
+    <div class="grid" id="memoryGrid"></div>
+    <p id="memoryResult"></p>
+  </div>
+
+  <!-- Maze Game -->
+  <div id="mazeGame">
+    <button class="back-btn" onclick="backToMenu()">← Back</button>
+    <canvas id="mazeCanvas" width="300" height="300"></canvas>
+    <p id="mazeResult"></p>
+  </div>
+</main>
+
+<footer>Made by Group 17 for SDG 15 — Life on Land 🌿</footer>
+
+<script>
+// Menu logic
+function showGame(game){
+  document.getElementById('menu').style.display='none';
+  if(game==='memory') document.getElementById('memoryGame').style.display='block';
+  else document.getElementById('mazeGame').style.display='block';
+}
+function backToMenu(){
+  document.getElementById('menu').style.display='flex';
+  document.getElementById('memoryGame').style.display='none';
+  document.getElementById('mazeGame').style.display='none';
+}
+
+// ------------------ Memory Game ------------------
+const animals = ["🦁","🐨","🐼","🦒","🦅","🐘","🦊","🦉"];
+let memoryGrid = document.getElementById('memoryGrid');
+let memoryResult = document.getElementById('memoryResult');
+let cards = [...animals, ...animals];
+cards.sort(()=>0.5-Math.random());
+let flipped=[];
+
+function createMemoryGrid(){
+  memoryGrid.innerHTML='';
+  cards.forEach((icon)=>{
+    let card = document.createElement('div');
+    card.className='card';
+    card.dataset.icon=icon;
+    card.onclick = ()=>flipCard(card);
+    memoryGrid.appendChild(card);
+  });
+}
+function flipCard(card){
+  if(flipped.length<2 && !card.classList.contains('flipped')){
+    card.classList.add('flipped');
+    card.textContent = card.dataset.icon;
+    flipped.push(card);
+    if(flipped.length===2){
+      setTimeout(checkMatch,500);
+    }
+  }
+}
+function checkMatch(){
+  if(flipped[0].dataset.icon===flipped[1].dataset.icon){
+    flipped[0].style.background='var(--sage-green)';
+    flipped[1].style.background='var(--sage-green)';
+    flipped[0].style.color='white';
+    flipped[1].style.color='white';
+  } else {
+    flipped[0].classList.remove('flipped'); flipped[0].textContent='';
+    flipped[1].classList.remove('flipped'); flipped[1].textContent='';
+  }
+  flipped=[];
+  if([...memoryGrid.children].every(c=>c.classList.contains('flipped'))){
+    memoryResult.textContent='🎉 You matched all animals!';
+  }
+}
+createMemoryGrid();
+
+// ------------------ Maze Game ------------------
+const canvas = document.getElementById('mazeCanvas');
+const ctx = canvas.getContext('2d');
+const gridSize = 8; // Slightly larger maze for better gameplay
+const cellSize = canvas.width / gridSize;
+
+const player = { x: 0, y: 0 };
+const goal = { x: gridSize - 1, y: gridSize - 1 };
+
+// Simple maze layout: 0 = path, 1 = wall
+const maze = [
+  [0,0,1,0,0,0,1,0],
+  [1,0,1,0,1,0,1,0],
+  [0,0,0,0,1,0,0,0],
+  [0,1,1,0,1,1,1,0],
+  [0,0,0,0,0,0,1,0],
+  [1,1,0,1,1,0,0,0],
+  [0,0,0,0,0,1,1,0],
+  [1,0,1,0,0,0,0,0]
+];
+
+function drawMaze() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++) {
+      // Wall
+      if (maze[y][x] === 1) {
+        ctx.fillStyle = "#065f46"; // dark green
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      } else {
+        // Path background
+        ctx.fillStyle = "#ecfdf5"; // light soft green
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      ctx.strokeStyle = "#bbf7d0"; // subtle grid lines
+      ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+    }
+  }
+
+  // Draw goal
+  ctx.fillStyle = "#22c55e";
+  ctx.beginPath();
+  ctx.arc(goal.x * cellSize + cellSize / 2, goal.y * cellSize + cellSize / 2, cellSize / 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Draw player
+  ctx.fillStyle = "#ef4444";
+  ctx.beginPath();
+  ctx.arc(player.x * cellSize + cellSize / 2, player.y * cellSize + cellSize / 2, cellSize / 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+drawMaze();
+
+document.addEventListener('keydown', (e) => {
+  let newX = player.x;
+  let newY = player.y;
+
+  if (e.key === "ArrowUp") newY--;
+  if (e.key === "ArrowDown") newY++;
+  if (e.key === "ArrowLeft") newX--;
+  if (e.key === "ArrowRight") newX++;
+
+  if (
+    newX >= 0 &&
+    newX < gridSize &&
+    newY >= 0 &&
+    newY < gridSize &&
+    maze[newY][newX] === 0
+  ) {
+    player.x = newX;
+    player.y = newY;
+    drawMaze();
+
+    if (player.x === goal.x && player.y === goal.y) {
+      document.getElementById("mazeResult").textContent = "🏆 You reached the goal!";
+    }
+  }
+});
+</script>
+</body>
+</html>

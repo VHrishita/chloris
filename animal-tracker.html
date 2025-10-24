@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wildlife Sighting - Wildlife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyByp9iWZ0ZsiDIvi84JurZUJohUfPMpNbY",
+  authDomain: "chloris-bc7c7.firebaseapp.com",
+  projectId: "chloris-bc7c7",
+  storageBucket: "chloris-bc7c7.appspot.com",
+  messagingSenderId: "198937142609",
+  appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
+};
+
+// Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(); // Firestore instance
+</script>
+
+  <style>
+    .animal-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark-green);
+      font-weight: 600;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid var(--glass-border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--sage-green);
+      background: white;
+    }
+
+    .animal-list {
+      margin-top: 3rem;
+    }
+
+    .animal-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--glass-border);
+      animation: slideInUp 0.5s ease;
+    }
+
+    .animal-item h3 {
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+    }
+
+    .animal-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark-green);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border: 2px solid #2f5233; 
+      color: #2f5233;
+      font-weight: 500;
+      border-radius: 0.5rem;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #e6f2e6;
+    }
+  </style>
+</head>
+<body>
+  <a href="features.html" class="back-btn">← Back</a>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🦁 Wildlife Tracker</h1>
+      <p>Log and monitor wildlife sightings</p>
+    </div>
+
+    <div class="glass-card animal-form">
+      <h2 style="color: var(--dark-green); margin-bottom: 1.5rem;">Add New Animal</h2>
+      <form id="animalForm">
+        <div class="form-group">
+          <label for="animalName">Species Name</label>
+          <input type="text" id="animalName" placeholder="e.g., Red Fox, Monarch Butterfly" required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="bird">🐦 Bird</option>
+            <option value="mammal">🦊 Mammal</option>
+            <option value="insect">🦋 Insect</option>
+            <option value="reptile">🦎 Reptile</option>
+            <option value="amphibian">🐸 Amphibian</option>
+            <option value="other">🐾 Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="latitude">Latitude *</label>
+          <input type="number" step="0.00000001" id="latitude" placeholder="0.0000000" required>
+        </div>
+
+        <div class="form-group">
+          <label for="longitude">Longitude *</label>
+          <input type="number" step="0.00000001" id="longitude" placeholder="0.0000000" required>
+        </div>
+
+        <button type="button" onclick="getLocation()">📍 Use My Current Location</button>
+
+        <div class="form-group">
+          <label for="sightingDate">Sighting Date *</label>
+          <input type="date" id="sightingDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="photo_url">Photo URL</label>
+          <input type="url" id="photo_url" placeholder="https://example.com/animal-photo.jpg">
+        </div>
+
+        <button type="submit" class="btn" style="margin-top: 1rem;">Log Animal 🐾</button>
+      </form>
+    </div>
+
+    <div class="animal-list" id="animalList"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
+
+    </div>
+  </footer>
+
+  <script>
+    let animals = JSON.parse(localStorage.getItem('animals')) || [];
+
+    function displayAnimals() {
+      const animalList = document.getElementById('animalList');
+      animalList.innerHTML = '';
+
+      if (animals.length === 0) {
+        animalList.innerHTML = '<p style="text-align:center; color:#666; margin-top:2rem;">No animals logged yet.</p>';
+        return;
+      }
+
+      animals.forEach((animal, index) => {
+        const animalCard = document.createElement('div');
+        animalCard.className = 'animal-item';
+        animalCard.innerHTML = `
+          <h3>${animal.name}</h3>
+          <div class="animal-stats">
+            <div class="stat">
+              <div class="stat-label">Category</div>
+              <div class="stat-value">${animal.category}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Sighting Date</div>
+              <div class="stat-value">${animal.date}</div>
+            </div>
+          </div>
+          <div class="animal-photo">
+            ${animal.photo ? `<img src="${animal.photo}" alt="${animal.name}" style="width:100%; border-radius:10px;">` : ''}
+          </div>
+          <div class="animal-location" style="margin-top:0.5rem; font-size:0.9rem; color:#666;">
+            Lat: ${animal.latitude}, Lng: ${animal.longitude}
+          </div>
+        `;
+        animalList.appendChild(animalCard);
+      });
+    }
+
+    document.getElementById('animalForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const newAnimal = {
+        name: document.getElementById('animalName').value,
+        category: document.getElementById('category').value,
+        latitude: parseFloat(document.getElementById('latitude').value),
+        longitude: parseFloat(document.getElementById('longitude').value),
+        date: document.getElementById('sightingDate').value,
+        photo: document.getElementById('photo_url').value
+      };
+
+      animals.push(newAnimal);
+      localStorage.setItem('animals', JSON.stringify(animals));
+
+      document.getElementById('animalForm').reset();
+      document.getElementById('sightingDate').value = new Date().toISOString().split('T')[0];
+      displayAnimals();
+    });
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            document.getElementById('latitude').value = position.coords.latitude.toFixed(8);
+            document.getElementById('longitude').value = position.coords.longitude.toFixed(8);
+          },
+          () => {
+            alert('Unable to get your location');
+          }
+        );
+      } else {
+        alert('Geolocation not supported by this browser.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('sightingDate').value = new Date().toISOString().split('T')[0];
+      displayAnimals();
+    });
+
+    document.getElementById('animalForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+ const animalData = {
+    species_name: document.getElementById('animalName').value,
+    category: document.getElementById('category').value,
+    latitude: parseFloat(document.getElementById('latitude').value),
+    longitude: parseFloat(document.getElementById('longitude').value),
+    sighting_date: document.getElementById('sightingDate').value,
+    photo_url: document.getElementById('photo_url').value,
+    created_at: firebase.firestore.FieldValue.serverTimestamp()
+};
+
+
+  // Store in Firestore
+  db.collection('wildlife_sightings')
+    .add(animalData)
+    .then(() => {
+      alert('Animal logged successfully! 🐾');
+      document.getElementById('animalForm').reset();
+    })
+    .catch((err) => {
+      console.error('Error adding document: ', err);
+      alert('Failed to log animal.');
+    });
+});
+
+
+  </script>
+</body>
+</html>
