@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievements - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .achievement-card {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: slideInUp 0.6s ease;
+    }
+
+    .achievement-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 50px rgba(143, 188, 143, 0.4);
+    }
+
+    .achievement-card.unlocked:hover {
+      box-shadow: 0 0 30px rgba(143, 188, 143, 0.8);
+    }
+
+    .achievement-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      filter: grayscale(100%);
+      opacity: 0.3;
+      transition: all 0.3s ease;
+    }
+
+    .achievement-card.unlocked .achievement-icon {
+      filter: grayscale(0%);
+      opacity: 1;
+      animation: bounce 0.5s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .achievement-title {
+      font-size: 1.3rem;
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .achievement-description {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .achievement-progress {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .progress-fill-achievement {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sage-green), var(--dark-green));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    .achievement-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, gold, #ffd700);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+      opacity: 0;
+    }
+
+    .achievement-card.unlocked .achievement-badge {
+      opacity: 1;
+      animation: spin 1s ease;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .locked-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .achievement-card.unlocked .locked-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .stats-summary {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+    }
+
+    .stats-summary h2 {
+      color: var(--dark-green);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .stats-numbers {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--sage-green);
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>✨ Achievements Board</h1>
+      <p>Celebrate your environmental milestones</p>
+    </div>
+
+    <div class="glass-card stats-summary">
+      <h2>Your Progress</h2>
+      <div class="stats-numbers">
+        <div class="stat-item">
+          <div class="stat-number" id="unlockedCount">5</div>
+          <div class="stat-label">Unlocked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="totalCount">12</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="percentageCount">42%</div>
+          <div class="stat-label">Completed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="achievements-grid" id="achievementsGrid"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const achievements = [
+      {
+        icon: '🌱',
+        title: 'First Sprout',
+        description: 'Add your first plant to the tracker',
+        unlocked: true,
+        progress: 100
+      },
+      {
+        icon: '💧',
+        title: 'Water Warrior',
+        description: 'Water plants for 7 consecutive days',
+        unlocked: true,
+        progress: 100
+      },
+      {
+        icon: '🌳',
+        title: 'Green Thumb',
+        description: 'Successfully grow 5 plants',
+        unlocked: true,
+        progress: 100
+      },
+      {
+        icon: '🌍',
+        title: 'Eco Explorer',
+        description: 'Visit all biodiversity map locations',
+        unlocked: true,
+        progress: 100
+      },
+      {
+        icon: '📚',
+        title: 'Knowledge Seeker',
+        description: 'Read 20 eco tips',
+        unlocked: true,
+        progress: 100
+      },
+      {
+        icon: '🎨',
+        title: 'Avatar Master',
+        description: 'Customize your avatar',
+        unlocked: false,
+        progress: 50
+      },
+      {
+        icon: '🏆',
+        title: 'Top 10',
+        description: 'Reach top 10 on the leaderboard',
+        unlocked: false,
+        progress: 30
+      },
+      {
+        icon: '📸',
+        title: 'Plant Doctor',
+        description: 'Analyze 10 plant health photos',
+        unlocked: false,
+        progress: 60
+      },
+      {
+        icon: '🌿',
+        title: 'Community Star',
+        description: 'Share 5 photos to the community wall',
+        unlocked: false,
+        progress: 0
+      },
+      {
+        icon: '🎧',
+        title: 'Nature Listener',
+        description: 'Listen to all nature sound types',
+        unlocked: false,
+        progress: 40
+      },
+      {
+        icon: '⭐',
+        title: 'Dedicated Guardian',
+        description: 'Use the app for 30 consecutive days',
+        unlocked: false,
+        progress: 25
+      },
+      {
+        icon: '👑',
+        title: 'Eco Champion',
+        description: 'Unlock all other achievements',
+        unlocked: false,
+        progress: 42
+      }
+    ];
+
+    function displayAchievements() {
+      const grid = document.getElementById('achievementsGrid');
+      
+      achievements.forEach((achievement, index) => {
+        const card = document.createElement('div');
+        card.className = `glass-card achievement-card ${achievement.unlocked ? 'unlocked' : ''}`;
+        card.style.animationDelay = `${index * 0.1}s`;
+        
+        card.innerHTML = `
+          ${achievement.unlocked ? '<div class="achievement-badge">✓</div>' : ''}
+          <div class="achievement-icon">${achievement.icon}</div>
+          <div class="achievement-title">${achievement.title}</div>
+          <div class="achievement-description">${achievement.description}</div>
+          <div class="achievement-progress">
+            <div class="progress-fill-achievement" style="width: ${achievement.progress}%"></div>
+          </div>
+          <p style="margin-top: 0.5rem; color: #999; font-size: 0.85rem;">${achievement.progress}% Complete</p>
+          ${!achievement.unlocked ? '<div class="locked-overlay">🔒</div>' : ''}
+        `;
+        
+        grid.appendChild(card);
+      });
+
+      const unlockedCount = achievements.filter(a => a.unlocked).length;
+      const totalCount = achievements.length;
+      const percentage = Math.round((unlockedCount / totalCount) * 100);
+
+      document.getElementById('unlockedCount').textContent = unlockedCount;
+      document.getElementById('totalCount').textContent = totalCount;
+      document.getElementById('percentageCount').textContent = percentage + '%';
+    }
+
+    displayAchievements();
+  </script>
+</body>
+</html>

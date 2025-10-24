@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nature Sounds - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .player-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .sound-visual {
+      width: 250px;
+      height: 250px;
+      margin: 2rem auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sage-green), var(--sky-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .sound-visual.playing {
+      animation: pulse-ring 2s ease-in-out infinite, float 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(143, 188, 143, 0.7);
+      }
+      50% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 30px rgba(143, 188, 143, 0);
+      }
+      100% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(143, 188, 143, 0);
+      }
+    }
+
+    .sound-title {
+      font-size: 2rem;
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+    }
+
+    .sound-description {
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .control-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--sage-green), var(--dark-green));
+      color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .control-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .volume-slider {
+      width: 200px;
+      height: 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--sage-green);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--sage-green);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .sound-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .sound-option {
+      background: rgba(255, 255, 255, 0.5);
+      border: 2px solid transparent;
+      border-radius: 15px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .sound-option:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .sound-option.active {
+      border-color: var(--sage-green);
+      background: rgba(143, 188, 143, 0.2);
+    }
+
+    .sound-option-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .sound-option-name {
+      color: var(--dark-green);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🎧 Nature Sounds Player</h1>
+      <p>Relax with calming nature soundscapes</p>
+    </div>
+
+    <div class="glass-card player-container">
+      <div class="sound-visual" id="soundVisual">🌲</div>
+      <div class="sound-title" id="soundTitle">Forest Ambience</div>
+      <div class="sound-description" id="soundDescription">Birds chirping, gentle wind through trees</div>
+
+      <div class="controls">
+        <button class="control-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+      </div>
+
+      <div class="volume-control">
+        <span style="font-size: 1.5rem;">🔈</span>
+        <input type="range" min="0" max="100" value="70" class="volume-slider" id="volumeSlider">
+        <span style="font-size: 1.5rem;">🔊</span>
+      </div>
+
+      <h3 style="color: var(--dark-green); margin-top: 3rem; margin-bottom: 1rem;">Choose a Sound</h3>
+      <div class="sound-options" id="soundOptions"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const sounds = [
+      {
+        name: 'Forest Ambience',
+        icon: '🌲',
+        description: 'Birds chirping, gentle wind through trees',
+        duration: '10:00'
+      },
+      {
+        name: 'Rain Sounds',
+        icon: '🌧️',
+        description: 'Peaceful rainfall on leaves',
+        duration: '12:00'
+      },
+      {
+        name: 'Ocean Waves',
+        icon: '🌊',
+        description: 'Calming waves on the shore',
+        duration: '15:00'
+      },
+      {
+        name: 'Jungle Sounds',
+        icon: '🦜',
+        description: 'Tropical birds and wildlife',
+        duration: '8:00'
+      },
+      {
+        name: 'Mountain Stream',
+        icon: '💧',
+        description: 'Flowing water over rocks',
+        duration: '20:00'
+      },
+      {
+        name: 'Night Crickets',
+        icon: '🦗',
+        description: 'Evening cricket symphony',
+        duration: '30:00'
+      }
+    ];
+
+    let currentSound = sounds[0];
+    let isPlaying = false;
+    let audioContext = null;
+    let oscillator = null;
+    let gainNode = null;
+
+    function displaySoundOptions() {
+      const container = document.getElementById('soundOptions');
+      
+      sounds.forEach((sound, index) => {
+        const option = document.createElement('div');
+        option.className = 'sound-option';
+        if (index === 0) option.classList.add('active');
+        
+        option.innerHTML = `
+          <div class="sound-option-icon">${sound.icon}</div>
+          <div class="sound-option-name">${sound.name}</div>
+        `;
+        
+        option.onclick = () => selectSound(sound, option);
+        container.appendChild(option);
+      });
+    }
+
+    function selectSound(sound, element) {
+      if (isPlaying) {
+        stopSound();
+      }
+
+      currentSound = sound;
+      
+      document.querySelectorAll('.sound-option').forEach(opt => {
+        opt.classList.remove('active');
+      });
+      element.classList.add('active');
+
+      document.getElementById('soundVisual').textContent = sound.icon;
+      document.getElementById('soundTitle').textContent = sound.name;
+      document.getElementById('soundDescription').textContent = sound.description;
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        stopSound();
+      } else {
+        playSound();
+      }
+    }
+
+    function playSound() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        gainNode = audioContext.createGain();
+        gainNode.connect(audioContext.destination);
+      }
+
+      oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(100 + Math.random() * 200, audioContext.currentTime);
+      
+      const lfo = audioContext.createOscillator();
+      lfo.frequency.setValueAtTime(0.5, audioContext.currentTime);
+      const lfoGain = audioContext.createGain();
+      lfoGain.gain.setValueAtTime(50, audioContext.currentTime);
+      
+      lfo.connect(lfoGain);
+      lfoGain.connect(oscillator.frequency);
+      
+      oscillator.connect(gainNode);
+      gainNode.gain.setValueAtTime(document.getElementById('volumeSlider').value / 500, audioContext.currentTime);
+      
+      oscillator.start();
+      lfo.start();
+
+      isPlaying = true;
+      document.getElementById('playBtn').textContent = '⏸️';
+      document.getElementById('soundVisual').classList.add('playing');
+    }
+
+    function stopSound() {
+      if (oscillator) {
+        oscillator.stop();
+        oscillator = null;
+      }
+
+      isPlaying = false;
+      document.getElementById('playBtn').textContent = '▶️';
+      document.getElementById('soundVisual').classList.remove('playing');
+    }
+
+    document.getElementById('volumeSlider').addEventListener('input', function(e) {
+      if (gainNode) {
+        gainNode.gain.setValueAtTime(e.target.value / 500, audioContext.currentTime);
+      }
+    });
+
+    displaySoundOptions();
+  </script>
+</body>
+</html>
