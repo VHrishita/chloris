@@ -10,14 +10,15 @@ GreenLife Tracker is a multi-page, Pinterest-style web application themed around
 - Create an engaging, interactive experience with beautiful design
 
 ## Current State
-✅ Fully functional 12-page web application
+✅ Fully functional 14-page web application
 ✅ Responsive design for desktop, tablet, and mobile
 ✅ Glassmorphism UI with smooth animations
 ✅ localStorage integration for data persistence
-✅ Interactive features: plant tracking, biodiversity map, nature sounds, achievements
+✅ Interactive features: plant tracking, biodiversity map, nature sounds, achievements, storytelling
 
 ## Recent Changes (October 24, 2025)
-- Created complete project structure with 12 interconnected HTML pages
+- ✨ NEW: Added two storytelling pages with animal and tree narratives (6 stories each)
+- Created complete project structure with 14 interconnected HTML pages
 - Implemented global CSS with glassmorphism effects and nature-inspired color palette
 - Added JavaScript for animations, localStorage, and interactive features
 - Configured Python HTTP server workflow on port 5000
@@ -39,6 +40,8 @@ GreenLife Tracker is a multi-page, Pinterest-style web application themed around
 ├── avatar-customizer.html # Avatar selection and customization
 ├── nature-sounds.html     # Nature soundscapes player
 ├── achievements.html      # Unlockable achievement badges
+├── animal-stories.html    # Interactive animal storytelling (6 narratives)
+├── tree-stories.html      # Ancient tree wisdom stories (6 narratives)
 ├── styles.css            # Global stylesheet with glassmorphism
 ├── app.js                # Shared JavaScript utilities
 └── .replit               # Replit configuration
@@ -114,6 +117,18 @@ GreenLife Tracker is a multi-page, Pinterest-style web application themed around
     - 12 unlockable achievements
     - Progress tracking
     - Locked/unlocked states with animations
+
+11. **Tales from the Wild (Animal Stories)**
+    - 6 animal narrators: Lion, Elephant, Eagle, Bee, Sea Turtle, Owl
+    - Interactive character selection
+    - Wisdom-filled stories about leadership, memory, vision, purpose, resilience
+    - Educational moral lessons aligned with SDG 15
+
+12. **Whispers of the Forest (Tree Stories)**
+    - 6 ancient trees: Oak, Pine, Palm, Cherry Blossom, Maple, Willow
+    - Age-based narratives (50-300 years old)
+    - Life lessons about strength, adaptability, beauty, transformation, compassion
+    - Swaying animations and tree-ring visual elements
 
 ## User Preferences
 - No specific preferences set yet
