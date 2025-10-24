@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Growth Tracker - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .plant-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark-green);
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid var(--glass-border);
+      border-radius: 10px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--sage-green);
+      background: white;
+    }
+
+    .progress-container {
+      margin-top: 2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sage-green), var(--dark-green));
+      border-radius: 15px;
+      transition: width 1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .plant-list {
+      margin-top: 3rem;
+    }
+
+    .plant-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--glass-border);
+      animation: slideInUp 0.5s ease;
+    }
+
+    .plant-item h3 {
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+    }
+
+    .plant-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark-green);
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🌳 Plant Growth Tracker</h1>
+      <p>Monitor your plants and watch them thrive</p>
+    </div>
+
+    <div class="glass-card plant-form">
+      <h2 style="color: var(--dark-green); margin-bottom: 1.5rem;">Add New Plant</h2>
+      <form id="plantForm">
+        <div class="form-group">
+          <label for="plantName">Plant Name</label>
+          <input type="text" id="plantName" placeholder="e.g., Monstera Deliciosa" required>
+        </div>
+
+        <div class="form-group">
+          <label for="daysWatered">Days Watered</label>
+          <input type="number" id="daysWatered" placeholder="e.g., 15" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label for="currentHeight">Current Height (cm)</label>
+          <input type="number" id="currentHeight" placeholder="e.g., 25" min="0" step="0.1" required>
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Add Plant 🌱</button>
+      </form>
+    </div>
+
+    <div class="plant-list" id="plantList"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    let plants = JSON.parse(localStorage.getItem('plants')) || [];
+
+    function displayPlants() {
+      const plantList = document.getElementById('plantList');
+      plantList.innerHTML = '';
+
+      if (plants.length === 0) {
+        plantList.innerHTML = '<p style="text-align: center; color: #666; margin-top: 2rem;">No plants added yet. Start tracking your first plant!</p>';
+        return;
+      }
+
+      plants.forEach((plant, index) => {
+        const maxHeight = 100;
+        const healthProgress = Math.min((plant.daysWatered / 30) * 100, 100);
+        const heightProgress = Math.min((plant.currentHeight / maxHeight) * 100, 100);
+
+        const plantCard = document.createElement('div');
+        plantCard.className = 'plant-item';
+        plantCard.innerHTML = `
+          <h3>${plant.name}</h3>
+          <div class="plant-stats">
+            <div class="stat">
+              <div class="stat-label">Days Watered</div>
+              <div class="stat-value">${plant.daysWatered}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Height (cm)</div>
+              <div class="stat-value">${plant.currentHeight}</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <p style="color: var(--dark-green); font-weight: 600; margin-bottom: 0.5rem;">Health Progress</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${healthProgress}%">${Math.round(healthProgress)}%</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <p style="color: var(--dark-green); font-weight: 600; margin-bottom: 0.5rem;">Growth Progress</p>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${heightProgress}%">${Math.round(heightProgress)}%</div>
+            </div>
+          </div>
+        `;
+        plantList.appendChild(plantCard);
+      });
+    }
+
+    document.getElementById('plantForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const newPlant = {
+        name: document.getElementById('plantName').value,
+        daysWatered: parseInt(document.getElementById('daysWatered').value),
+        currentHeight: parseFloat(document.getElementById('currentHeight').value)
+      };
+
+      plants.push(newPlant);
+      localStorage.setItem('plants', JSON.stringify(plants));
+
+      document.getElementById('plantForm').reset();
+      displayPlants();
+    });
+
+    displayPlants();
+  </script>
+</body>
+</html>

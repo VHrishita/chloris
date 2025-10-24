@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Tips - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tip-container {
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .tip-icon {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .tip-text {
+      font-size: 1.5rem;
+      color: var(--dark-green);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      animation: fadeIn 1s ease;
+    }
+
+    .tip-category {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--sage-green), var(--dark-green));
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .navigation-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .tip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .tip-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .tip-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tip-card h3 {
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .tip-card p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; transform: translateY(20px); }
+      10%, 90% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>💡 Eco Tips of the Day</h1>
+      <p>Small actions, big impact for our planet</p>
+    </div>
+
+    <div class="glass-card tip-container">
+      <div class="tip-category" id="tipCategory">Conservation</div>
+      <div class="tip-icon" id="tipIcon">🌱</div>
+      <p class="tip-text" id="tipText">Loading eco tip...</p>
+      <div class="navigation-buttons">
+        <button class="btn" onclick="previousTip()">← Previous</button>
+        <button class="btn btn-secondary" onclick="nextTip()">Next →</button>
+      </div>
+    </div>
+
+    <h2 style="text-align: center; color: var(--dark-green); margin-top: 4rem; margin-bottom: 2rem;">Quick Eco Actions</h2>
+    <div class="tip-grid">
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">♻️</div>
+        <h3>Reduce, Reuse, Recycle</h3>
+        <p>Minimize waste by choosing reusable items</p>
+      </div>
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">🚶</div>
+        <h3>Walk or Bike</h3>
+        <p>Reduce carbon footprint with active transport</p>
+      </div>
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">💧</div>
+        <h3>Conserve Water</h3>
+        <p>Every drop counts for our ecosystems</p>
+      </div>
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">🌳</div>
+        <h3>Plant Trees</h3>
+        <p>Create habitats and clean our air</p>
+      </div>
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">🥬</div>
+        <h3>Eat Local</h3>
+        <p>Support local farms and reduce transport</p>
+      </div>
+      <div class="glass-card tip-card">
+        <div class="tip-card-icon">💡</div>
+        <h3>Save Energy</h3>
+        <p>Turn off lights and use LED bulbs</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const ecoTips = [
+      {
+        icon: '🌱',
+        category: 'Conservation',
+        text: 'Plant native species in your garden to support local wildlife and pollinators.'
+      },
+      {
+        icon: '💧',
+        category: 'Water',
+        text: 'Collect rainwater for gardening to conserve fresh water resources.'
+      },
+      {
+        icon: '🌳',
+        category: 'Forestry',
+        text: 'Support reforestation projects - trees absorb CO2 and provide habitats for countless species.'
+      },
+      {
+        icon: '🐝',
+        category: 'Wildlife',
+        text: 'Create a pollinator-friendly garden with wildflowers to support bee populations.'
+      },
+      {
+        icon: '♻️',
+        category: 'Recycling',
+        text: 'Compost organic waste to reduce landfill and create nutrient-rich soil.'
+      },
+      {
+        icon: '🌾',
+        category: 'Agriculture',
+        text: 'Choose organic and sustainably sourced products to protect soil health.'
+      },
+      {
+        icon: '🦋',
+        category: 'Biodiversity',
+        text: 'Avoid using pesticides - they harm beneficial insects and pollinators.'
+      },
+      {
+        icon: '🏞️',
+        category: 'Land Use',
+        text: 'Support protected areas and national parks that preserve natural habitats.'
+      },
+      {
+        icon: '🌿',
+        category: 'Education',
+        text: 'Learn about endangered species in your region and how to help protect them.'
+      },
+      {
+        icon: '🌍',
+        category: 'Community',
+        text: 'Join local conservation groups to make a bigger impact together.'
+      }
+    ];
+
+    let currentTipIndex = 0;
+
+    function displayTip(index) {
+      const tip = ecoTips[index];
+      const tipIcon = document.getElementById('tipIcon');
+      const tipText = document.getElementById('tipText');
+      const tipCategory = document.getElementById('tipCategory');
+
+      tipText.style.animation = 'none';
+      setTimeout(() => {
+        tipIcon.textContent = tip.icon;
+        tipCategory.textContent = tip.category;
+        tipText.textContent = tip.text;
+        tipText.style.animation = 'fadeIn 1s ease';
+      }, 100);
+    }
+
+    function nextTip() {
+      currentTipIndex = (currentTipIndex + 1) % ecoTips.length;
+      displayTip(currentTipIndex);
+    }
+
+    function previousTip() {
+      currentTipIndex = (currentTipIndex - 1 + ecoTips.length) % ecoTips.length;
+      displayTip(currentTipIndex);
+    }
+
+    setInterval(nextTip, 8000);
+
+    displayTip(currentTipIndex);
+  </script>
+</body>
+</html>

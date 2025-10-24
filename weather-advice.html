@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Advice - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .weather-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .weather-icon {
+      font-size: 6rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .weather-info {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .weather-info h2 {
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .temperature {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--sage-green);
+      margin: 1rem 0;
+    }
+
+    .advice-section {
+      margin-top: 2rem;
+    }
+
+    .advice-item {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--sage-green);
+      animation: slideInUp 0.6s ease;
+    }
+
+    .advice-item h3 {
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .advice-item p {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .location-info {
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🌦️ Weather-Based Advice</h1>
+      <p>Environmental tips tailored to your weather</p>
+    </div>
+
+    <div class="glass-card weather-container">
+      <div class="weather-icon" id="weatherIcon">☀️</div>
+      <div class="weather-info">
+        <h2 id="weatherCondition">Sunny Day</h2>
+        <div class="temperature" id="temperature">22°C</div>
+        <p class="location-info" id="locationInfo">📍 Detecting your location...</p>
+      </div>
+
+      <div class="advice-section" id="adviceSection">
+        <h3 style="color: var(--dark-green); margin-bottom: 1rem;">Eco Actions for Today:</h3>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const weatherAdvice = {
+      sunny: {
+        icon: '☀️',
+        condition: 'Sunny Day',
+        temp: '22°C',
+        advice: [
+          { title: '💧 Water Your Plants Early', text: 'Water plants in the morning to minimize evaporation and maximize absorption.' },
+          { title: '🌳 Shade-Loving Activities', text: 'Perfect day for outdoor conservation work. Wear sun protection!' },
+          { title: '♻️ Solar Energy', text: 'Great conditions for solar panels. Consider solar-powered devices for outdoor activities.' },
+          { title: '🌻 Garden Care', text: 'Check your garden for wilting plants and provide shade for sensitive species.' }
+        ]
+      },
+      rainy: {
+        icon: '🌧️',
+        condition: 'Rainy Day',
+        temp: '16°C',
+        advice: [
+          { title: '💧 Collect Rainwater', text: 'Set up containers to collect rainwater for future plant watering.' },
+          { title: '🌱 Indoor Gardening', text: 'Perfect time for seed starting and indoor plant care.' },
+          { title: '📚 Learn & Plan', text: 'Research native plants to add to your garden when weather improves.' },
+          { title: '🌿 Natural Irrigation', text: 'Let nature water your outdoor plants - save on water usage today!' }
+        ]
+      },
+      cloudy: {
+        icon: '☁️',
+        condition: 'Cloudy Day',
+        temp: '18°C',
+        advice: [
+          { title: '🌳 Planting Day', text: 'Ideal conditions for transplanting - reduced stress on plants.' },
+          { title: '🚶 Nature Walk', text: 'Comfortable weather for exploring local nature trails and ecosystems.' },
+          { title: '📸 Wildlife Watching', text: 'Many animals are more active in cooler, cloudy conditions.' },
+          { title: '♻️ Outdoor Cleanup', text: 'Perfect temperature for community cleanup activities.' }
+        ]
+      },
+      windy: {
+        icon: '💨',
+        condition: 'Windy Day',
+        temp: '19°C',
+        advice: [
+          { title: '🌬️ Check Plant Stakes', text: 'Secure tall plants and seedlings to prevent wind damage.' },
+          { title: '♻️ Debris Collection', text: 'Collect fallen branches and leaves for composting.' },
+          { title: '🌳 Tree Inspection', text: 'Check trees for loose branches that could pose hazards.' },
+          { title: '🏡 Indoor Activities', text: 'Focus on indoor environmental planning and education.' }
+        ]
+      },
+      snowy: {
+        icon: '❄️',
+        condition: 'Snowy Day',
+        temp: '-2°C',
+        advice: [
+          { title: '🌲 Protect Evergreens', text: 'Brush snow off evergreen branches to prevent breaking.' },
+          { title: '🦜 Feed Wildlife', text: 'Put out bird feeders - animals need extra help finding food.' },
+          { title: '🏡 Indoor Planning', text: 'Plan your spring garden and research cold-hardy native species.' },
+          { title: '💡 Energy Conservation', text: 'Use natural insulation to reduce heating needs.' }
+        ]
+      }
+    };
+
+    function getWeatherByLocation(lat, lon) {
+      const conditions = ['sunny', 'rainy', 'cloudy', 'windy', 'snowy'];
+      const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+      return randomCondition;
+    }
+
+    function displayWeatherAdvice(condition) {
+      const weather = weatherAdvice[condition];
+      
+      document.getElementById('weatherIcon').textContent = weather.icon;
+      document.getElementById('weatherCondition').textContent = weather.condition;
+      document.getElementById('temperature').textContent = weather.temp;
+
+      const adviceSection = document.getElementById('adviceSection');
+      const adviceHTML = weather.advice.map(item => `
+        <div class="advice-item">
+          <h3>${item.title}</h3>
+          <p>${item.text}</p>
+        </div>
+      `).join('');
+
+      adviceSection.innerHTML = '<h3 style="color: var(--dark-green); margin-bottom: 1rem;">Eco Actions for Today:</h3>' + adviceHTML;
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          document.getElementById('locationInfo').textContent = `📍 Location: ${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°`;
+          const condition = getWeatherByLocation(latitude, longitude);
+          displayWeatherAdvice(condition);
+        },
+        (error) => {
+          document.getElementById('locationInfo').textContent = '📍 Default Location (Geolocation not available)';
+          displayWeatherAdvice('sunny');
+        }
+      );
+    } else {
+      document.getElementById('locationInfo').textContent = '📍 Default Location';
+      displayWeatherAdvice('sunny');
+    }
+  </script>
+</body>
+</html>
