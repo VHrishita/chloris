@@ -1,0 +1,78 @@
+Build a **multi-page, Pinterest-style web app** called GreenLife Tracker, themed around SDG Goal 15: Life on Land 🌱.  
+Use **HTML, CSS, and JavaScript only** — no frameworks. Make it visually stunning, modern, and responsive.
+
+🖼️ **Design Aesthetic**
+- Soft natural gradients (sage green, beige, sky blue)
+- Glassmorphism cards (blur + shadows)
+- Smooth page transitions or fade-in animations
+- Elegant fonts (Poppins + Playfair Display)
+- Nature images from Unsplash/Pexels
+- Hover effects, small animations, floating leaf particles optional
+
+📄 **Pages & Features**
+
+1. **index.html (Landing Page / Hero)**
+   - Fullscreen forest/green background
+   - Title: "GreenLife Tracker — Caring for Life on Land 🌳"
+   - Subtitle: "Track, Learn, and Protect our Planet"
+   - Buttons: "Get Started" → links to Plant Tracker page, "Learn More" → links to Eco Tips page
+
+2. **plant-tracker.html (🌳 Plant Growth Tracker)**
+   - Add plant, input days watered, current height
+   - Animated progress bar
+   - Back button to landing page
+
+3. **biodiversity.html (🗺️ Mini Biodiversity Map)**
+   - Interactive map image with fake pins
+   - Cards showing location info
+   - Back button
+
+4. **eco-tips.html (💡 Eco Tips of the Day)**
+   - Rotating tips from an array
+   - Animated text fade-in/out
+   - Back button
+
+5. **weather-advice.html (🌦️ Weather-Based Advice)**
+   - Display advice based on geolocation or default
+   - Animated card
+   - Back button
+
+6. **plant-health.html (🧠 Plant Health Detector Mock)**
+   - File upload button (non-functional demo)
+   - Random health messages on upload
+   - Back button
+
+7. **community-wall.html (🪴 Community Wall)**
+   - Masonry grid of nature photos
+   - Hover zoom + shadow
+   - Back button
+
+8. **leaderboard.html (🏆 Eco Leaderboard)**
+   - Sample user rankings and points
+   - Crown icons for top 3
+   - Back button
+
+9. **avatar-customizer.html (🎨 Eco Avatar Customizer)**
+   - Pick an avatar (tree, flower, bird)
+   - Show avatar on top-right corner
+   - Back button
+
+10. **nature-sounds.html (🎧 Nature Sounds Player)**
+    - Play/pause forest/rain sounds
+    - Small UI controls
+    - Back button
+
+11. **achievements.html (✨ Achievements Board)**
+    - List unlocked achievements
+    - Hover glow effect
+    - Back button
+
+12. **footer.html (Included on all pages)**
+    - Soft background, social icons, text: "Made with ❤️ for SDG 15 — Life on Land"
+
+💡 Additional Instructions:
+- Ensure smooth navigation between pages
+- Maintain a consistent visual theme across pages
+- Include animations for cards, buttons, and hover states
+- Make all pages responsive for desktop, tablet, and mobile
+- Use aesthetic, modern, and interactive design — NOT plain gradients
