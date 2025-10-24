@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Leaderboard - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .leaderboard-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .leaderboard-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border: 1px solid var(--glass-border);
+      transition: all 0.3s ease;
+      animation: slideInUp 0.5s ease;
+    }
+
+    .leaderboard-item:hover {
+      transform: translateX(10px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .rank {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark-green);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .crown {
+      font-size: 2.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .top-1 {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1));
+      border: 2px solid gold;
+    }
+
+    .top-2 {
+      background: linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(192, 192, 192, 0.1));
+      border: 2px solid silver;
+    }
+
+    .top-3 {
+      background: linear-gradient(135deg, rgba(205, 127, 50, 0.3), rgba(205, 127, 50, 0.1));
+      border: 2px solid #cd7f32;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .username {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark-green);
+      margin-bottom: 0.3rem;
+    }
+
+    .user-stats {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .points {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--sage-green);
+      text-align: right;
+    }
+
+    .points-label {
+      font-size: 0.9rem;
+      color: #999;
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .stat-card-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark-green);
+    }
+
+    .stat-card-label {
+      color: #666;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🏆 Eco Leaderboard</h1>
+      <p>Top contributors making a difference</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="glass-card stat-card">
+        <div class="stat-card-icon">🌱</div>
+        <div class="stat-card-value">1,247</div>
+        <div class="stat-card-label">Total Users</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="stat-card-icon">🌳</div>
+        <div class="stat-card-value">5,892</div>
+        <div class="stat-card-label">Trees Tracked</div>
+      </div>
+      <div class="glass-card stat-card">
+        <div class="stat-card-icon">💧</div>
+        <div class="stat-card-value">12,450</div>
+        <div class="stat-card-label">Actions Taken</div>
+      </div>
+    </div>
+
+    <div class="leaderboard-container" id="leaderboard"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const users = [
+      { username: 'EcoWarrior2024', points: 2850, plants: 15, actions: 142 },
+      { username: 'GreenThumbPro', points: 2640, plants: 12, actions: 128 },
+      { username: 'NatureLover88', points: 2420, plants: 18, actions: 115 },
+      { username: 'PlantParent', points: 2180, plants: 14, actions: 98 },
+      { username: 'TreeHugger', points: 1950, plants: 10, actions: 87 },
+      { username: 'EcoHero', points: 1820, plants: 11, actions: 76 },
+      { username: 'GreenGuardian', points: 1650, plants: 9, actions: 71 },
+      { username: 'SustainableSam', points: 1480, plants: 8, actions: 65 },
+      { username: 'WildlifeWatcher', points: 1320, plants: 7, actions: 58 },
+      { username: 'EarthAdvocate', points: 1150, plants: 6, actions: 52 }
+    ];
+
+    function displayLeaderboard() {
+      const container = document.getElementById('leaderboard');
+      
+      users.forEach((user, index) => {
+        const rank = index + 1;
+        let rankDisplay = rank;
+        let crownIcon = '';
+        let specialClass = '';
+
+        if (rank === 1) {
+          crownIcon = '<span class="crown">👑</span>';
+          specialClass = 'top-1';
+        } else if (rank === 2) {
+          crownIcon = '<span class="crown">🥈</span>';
+          specialClass = 'top-2';
+        } else if (rank === 3) {
+          crownIcon = '<span class="crown">🥉</span>';
+          specialClass = 'top-3';
+        }
+
+        const item = document.createElement('div');
+        item.className = `leaderboard-item ${specialClass}`;
+        item.style.animationDelay = `${index * 0.1}s`;
+        
+        item.innerHTML = `
+          <div class="rank">
+            ${crownIcon || `#${rank}`}
+          </div>
+          <div class="user-info">
+            <div class="username">${user.username}</div>
+            <div class="user-stats">🌱 ${user.plants} plants · ✅ ${user.actions} eco actions</div>
+          </div>
+          <div class="points">
+            ${user.points.toLocaleString()}
+            <span class="points-label">points</span>
+          </div>
+        `;
+        
+        container.appendChild(item);
+      });
+    }
+
+    displayLeaderboard();
+  </script>
+</body>
+</html>

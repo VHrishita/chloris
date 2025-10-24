@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Wall - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .masonry-grid {
+      column-count: 3;
+      column-gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .masonry-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .masonry-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .masonry-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      padding: 1.5rem;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .masonry-item:hover .photo-overlay {
+      opacity: 1;
+    }
+
+    .photo-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .photo-author {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 992px) {
+      .masonry-grid {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .masonry-grid {
+        column-count: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🪴 Community Wall</h1>
+      <p>Share and explore beautiful nature photography</p>
+    </div>
+
+    <div class="masonry-grid" id="masonryGrid"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const photos = [
+      {
+        url: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=600&q=80',
+        title: 'Misty Forest',
+        author: 'Nature Lover',
+        height: 400
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+        title: 'Mountain Landscape',
+        author: 'EcoExplorer',
+        height: 500
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80',
+        title: 'Sunset Valley',
+        author: 'GreenThumb',
+        height: 350
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=600&q=80',
+        title: 'Tropical Paradise',
+        author: 'WildlifeWatcher',
+        height: 450
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600&q=80',
+        title: 'Flower Meadow',
+        author: 'FloraFan',
+        height: 300
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80',
+        title: 'Coastal Cliffs',
+        author: 'OceanGuardian',
+        height: 550
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=600&q=80',
+        title: 'Wildflowers',
+        author: 'PollinatorPal',
+        height: 400
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&q=80',
+        title: 'Lake Reflection',
+        author: 'WaterWise',
+        height: 350
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80',
+        title: 'Forest Path',
+        author: 'TreeHugger',
+        height: 500
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80',
+        title: 'Alpine Heights',
+        author: 'MountainMover',
+        height: 450
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=600&q=80',
+        title: 'River Valley',
+        author: 'StreamKeeper',
+        height: 380
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=600&q=80',
+        title: 'Jungle Canopy',
+        author: 'RainforestRanger',
+        height: 420
+      }
+    ];
+
+    function createMasonryGrid() {
+      const grid = document.getElementById('masonryGrid');
+      
+      photos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'masonry-item';
+        item.style.animationDelay = `${index * 0.1}s`;
+        
+        item.innerHTML = `
+          <img src="${photo.url}" alt="${photo.title}" loading="lazy">
+          <div class="photo-overlay">
+            <div class="photo-title">${photo.title}</div>
+            <div class="photo-author">by ${photo.author}</div>
+          </div>
+        `;
+        
+        grid.appendChild(item);
+      });
+    }
+
+    createMasonryGrid();
+  </script>
+</body>
+</html>

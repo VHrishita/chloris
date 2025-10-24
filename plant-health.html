@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Health Detector - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .upload-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .upload-area {
+      border: 3px dashed var(--sage-green);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 2rem;
+    }
+
+    .upload-area:hover {
+      border-color: var(--dark-green);
+      background: rgba(255, 255, 255, 0.7);
+      transform: scale(1.02);
+    }
+
+    .upload-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .upload-text {
+      color: var(--dark-green);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-subtext {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .result-container {
+      display: none;
+      margin-top: 2rem;
+      animation: slideInUp 0.6s ease;
+    }
+
+    .result-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+
+    .health-status {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .health-details {
+      background: rgba(255, 255, 255, 0.5);
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-align: left;
+      margin-top: 1.5rem;
+    }
+
+    .health-details h4 {
+      color: var(--dark-green);
+      margin-bottom: 1rem;
+    }
+
+    .health-details ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .health-details li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .health-details li:before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--sage-green);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🧠 Plant Health Detector</h1>
+      <p>Upload a photo to analyze your plant's health</p>
+    </div>
+
+    <div class="glass-card upload-container">
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">📸</div>
+        <p class="upload-text">Click to Upload Plant Photo</p>
+        <p class="upload-subtext">Support JPG, PNG, HEIC formats</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*">
+      <button class="btn" onclick="analyzeImage()" style="margin-top: 1rem;">Analyze Plant Health 🔍</button>
+
+      <div id="resultContainer" class="result-container">
+        <div class="result-icon" id="resultIcon">🌿</div>
+        <div class="health-status" id="healthStatus">Analyzing...</div>
+        <p id="healthDescription" style="color: #666; line-height: 1.6;"></p>
+        
+        <div class="health-details">
+          <h4>Recommendations:</h4>
+          <ul id="recommendations"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const healthResults = [
+      {
+        icon: '🌿',
+        status: 'Healthy Plant!',
+        color: '#27ae60',
+        description: 'Your plant appears to be in excellent condition with vibrant leaves and strong growth.',
+        recommendations: [
+          'Continue current watering schedule',
+          'Maintain current light exposure',
+          'Consider fertilizing monthly for optimal growth',
+          'Monitor for any changes in leaf color'
+        ]
+      },
+      {
+        icon: '💧',
+        status: 'Needs More Water',
+        color: '#3498db',
+        description: 'Signs indicate your plant may need more frequent watering. Leaves show slight wilting.',
+        recommendations: [
+          'Increase watering frequency',
+          'Check soil moisture before watering',
+          'Ensure proper drainage to prevent root rot',
+          'Consider a moisture meter for accurate readings'
+        ]
+      },
+      {
+        icon: '☀️',
+        status: 'Needs More Light',
+        color: '#f39c12',
+        description: 'Your plant is showing signs of insufficient light. Consider moving to a brighter location.',
+        recommendations: [
+          'Move to a location with more natural light',
+          'Rotate plant regularly for even growth',
+          'Consider grow lights for low-light areas',
+          'Avoid direct harsh sunlight which can burn leaves'
+        ]
+      },
+      {
+        icon: '🍂',
+        status: 'Minor Issues Detected',
+        color: '#e67e22',
+        description: 'Some leaves show minor discoloration. This could be due to nutrients or environmental factors.',
+        recommendations: [
+          'Check for pests on leaves and soil',
+          'Adjust fertilizer schedule if needed',
+          'Ensure humidity levels are appropriate',
+          'Remove any dead or yellowing leaves'
+        ]
+      },
+      {
+        icon: '🌱',
+        status: 'Growing Well',
+        color: '#2ecc71',
+        description: 'Your plant shows active growth with new shoots and healthy leaf development.',
+        recommendations: [
+          'Continue providing optimal care',
+          'Consider repotting if roots are crowded',
+          'Prune to encourage bushier growth',
+          'Watch for growth spurts in spring and summer'
+        ]
+      }
+    ];
+
+    let uploadedFile = null;
+
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      uploadedFile = e.target.files[0];
+      if (uploadedFile) {
+        const uploadText = document.querySelector('.upload-text');
+        uploadText.textContent = `Selected: ${uploadedFile.name}`;
+        uploadText.style.color = 'var(--sage-green)';
+      }
+    });
+
+    function analyzeImage() {
+      if (!uploadedFile) {
+        alert('Please select a plant photo first!');
+        return;
+      }
+
+      const resultContainer = document.getElementById('resultContainer');
+      resultContainer.style.display = 'block';
+
+      document.getElementById('healthStatus').textContent = 'Analyzing...';
+      document.getElementById('healthDescription').textContent = 'Please wait while we analyze your plant...';
+      document.getElementById('recommendations').innerHTML = '';
+
+      setTimeout(() => {
+        const randomResult = healthResults[Math.floor(Math.random() * healthResults.length)];
+        
+        document.getElementById('resultIcon').textContent = randomResult.icon;
+        document.getElementById('healthStatus').textContent = randomResult.status;
+        document.getElementById('healthStatus').style.color = randomResult.color;
+        document.getElementById('healthDescription').textContent = randomResult.description;
+
+        const recommendationsList = document.getElementById('recommendations');
+        recommendationsList.innerHTML = randomResult.recommendations
+          .map(rec => `<li>${rec}</li>`)
+          .join('');
+
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

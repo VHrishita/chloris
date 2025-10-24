@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avatar Customizer - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .customizer-container {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .avatar-preview {
+      font-size: 10rem;
+      margin: 2rem 0;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .avatar-option {
+      background: rgba(255, 255, 255, 0.5);
+      border: 3px solid transparent;
+      border-radius: 15px;
+      padding: 1.5rem;
+      font-size: 3rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .avatar-option:hover {
+      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .avatar-option.selected {
+      border-color: var(--sage-green);
+      background: rgba(143, 188, 143, 0.2);
+      box-shadow: 0 0 20px rgba(143, 188, 143, 0.5);
+    }
+
+    .avatar-name {
+      font-size: 2rem;
+      color: var(--dark-green);
+      margin: 1rem 0;
+      font-weight: 600;
+    }
+
+    .avatar-description {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .success-message {
+      background: linear-gradient(135deg, var(--sage-green), var(--dark-green));
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      display: none;
+      animation: slideInUp 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🎨 Eco Avatar Customizer</h1>
+      <p>Choose your nature spirit avatar</p>
+    </div>
+
+    <div class="glass-card customizer-container">
+      <div class="avatar-preview" id="avatarPreview">🌳</div>
+      <div class="avatar-name" id="avatarName">Mighty Oak</div>
+      <div class="avatar-description" id="avatarDescription">Strong, wise, and deeply rooted in nature</div>
+
+      <h3 style="color: var(--dark-green); margin-bottom: 1rem;">Select Your Avatar</h3>
+      <div class="avatar-grid" id="avatarGrid"></div>
+
+      <button class="btn" onclick="saveAvatar()" style="margin-top: 2rem; width: 100%;">
+        Save Avatar ✨
+      </button>
+
+      <div class="success-message" id="successMessage">
+        ✓ Avatar saved successfully! You'll see it in the top right corner.
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const avatars = [
+      { emoji: '🌳', name: 'Mighty Oak', description: 'Strong, wise, and deeply rooted in nature' },
+      { emoji: '🌸', name: 'Cherry Blossom', description: 'Delicate, beautiful, and full of life' },
+      { emoji: '🦜', name: 'Tropical Parrot', description: 'Colorful, vocal, and free-spirited' },
+      { emoji: '🌺', name: 'Hibiscus', description: 'Vibrant, tropical, and eye-catching' },
+      { emoji: '🦋', name: 'Butterfly', description: 'Graceful, transformative, and light' },
+      { emoji: '🌿', name: 'Fern Leaf', description: 'Ancient, resilient, and evergreen' },
+      { emoji: '🦅', name: 'Soaring Eagle', description: 'Majestic, powerful, and visionary' },
+      { emoji: '🌻', name: 'Sunflower', description: 'Bright, optimistic, and sun-loving' },
+      { emoji: '🐝', name: 'Busy Bee', description: 'Hardworking, essential, and productive' },
+      { emoji: '🌾', name: 'Golden Wheat', description: 'Nourishing, abundant, and vital' },
+      { emoji: '🦎', name: 'Forest Gecko', description: 'Adaptive, quick, and stealthy' },
+      { emoji: '🍄', name: 'Magic Mushroom', description: 'Mysterious, networked, and essential' }
+    ];
+
+    let selectedAvatar = avatars[0];
+
+    function displayAvatarOptions() {
+      const grid = document.getElementById('avatarGrid');
+      
+      avatars.forEach((avatar, index) => {
+        const option = document.createElement('div');
+        option.className = 'avatar-option';
+        if (index === 0) option.classList.add('selected');
+        option.textContent = avatar.emoji;
+        option.onclick = () => selectAvatar(avatar, option);
+        grid.appendChild(option);
+      });
+    }
+
+    function selectAvatar(avatar, element) {
+      selectedAvatar = avatar;
+      
+      document.querySelectorAll('.avatar-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      element.classList.add('selected');
+
+      document.getElementById('avatarPreview').textContent = avatar.emoji;
+      document.getElementById('avatarName').textContent = avatar.name;
+      document.getElementById('avatarDescription').textContent = avatar.description;
+    }
+
+    function saveAvatar() {
+      localStorage.setItem('userAvatar', selectedAvatar.emoji);
+      
+      const successMessage = document.getElementById('successMessage');
+      successMessage.style.display = 'block';
+
+      const avatarDisplay = document.getElementById('avatarDisplay');
+      if (avatarDisplay) {
+        avatarDisplay.textContent = selectedAvatar.emoji;
+        avatarDisplay.style.display = 'flex';
+      }
+
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 3000);
+    }
+
+    displayAvatarOptions();
+
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const saved = avatars.find(a => a.emoji === savedAvatar);
+      if (saved) {
+        selectedAvatar = saved;
+        document.getElementById('avatarPreview').textContent = saved.emoji;
+        document.getElementById('avatarName').textContent = saved.name;
+        document.getElementById('avatarDescription').textContent = saved.description;
+        
+        const options = document.querySelectorAll('.avatar-option');
+        options.forEach((opt, index) => {
+          if (avatars[index].emoji === savedAvatar) {
+            opt.classList.add('selected');
+          } else {
+            opt.classList.remove('selected');
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
