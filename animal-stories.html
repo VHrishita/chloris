@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Stories - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .story-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .story-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .animal-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 3px solid transparent;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .animal-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .animal-card.active {
+      border-color: var(--sage-green);
+      background: rgba(143, 188, 143, 0.2);
+      box-shadow: 0 0 20px rgba(143, 188, 143, 0.5);
+    }
+
+    .animal-icon {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .animal-name {
+      color: var(--dark-green);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .story-display {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid var(--glass-border);
+      min-height: 400px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .story-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(143, 188, 143, 0.3);
+    }
+
+    .story-character {
+      font-size: 5rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .story-title {
+      flex: 1;
+    }
+
+    .story-title h2 {
+      color: var(--dark-green);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .story-subtitle {
+      color: #666;
+      font-style: italic;
+    }
+
+    .story-content {
+      color: #444;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    .story-content p {
+      margin-bottom: 1.5rem;
+    }
+
+    .story-moral {
+      background: linear-gradient(135deg, rgba(143, 188, 143, 0.2), rgba(135, 206, 235, 0.2));
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      border-left: 4px solid var(--sage-green);
+    }
+
+    .story-moral h4 {
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .story-moral p {
+      color: #555;
+      font-weight: 500;
+    }
+
+    .navigation-dots {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(143, 188, 143, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: var(--sage-green);
+      transform: scale(1.5);
+    }
+
+    .story-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🦁 Tales from the Wild</h1>
+      <p>Listen to the wisdom of our animal friends</p>
+    </div>
+
+    <div class="glass-card story-container">
+      <h3 style="color: var(--dark-green); margin-bottom: 1.5rem; text-align: center;">Choose an Animal Storyteller</h3>
+      <div class="story-selector" id="animalSelector"></div>
+    </div>
+
+    <div class="story-display" id="storyDisplay">
+      <div class="story-header">
+        <div class="story-character" id="storyCharacter">🦁</div>
+        <div class="story-title">
+          <h2 id="storyTitle">The Lion's Wisdom</h2>
+          <p class="story-subtitle" id="storySubtitle">A tale of courage and leadership</p>
+        </div>
+      </div>
+      <div class="story-content" id="storyContent"></div>
+      <div class="story-controls">
+        <button class="btn" onclick="previousStory()">← Previous</button>
+        <button class="btn btn-secondary" onclick="nextStory()">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const animalStories = [
+      {
+        animal: '🦁',
+        name: 'Lion',
+        title: "The Lion's Wisdom",
+        subtitle: "A tale of courage and leadership",
+        story: [
+          "In the vast savannas of Africa, I, the mighty lion, have watched the sun rise and set for many seasons. My mane flows with the wind, and my roar echoes across the plains, not to frighten, but to protect.",
+          "Young ones often ask me, 'What makes a true leader?' I tell them: A leader does not rule through fear, but through respect. I protect my pride, ensuring every member has food and safety. When drought comes, I lead us to new lands. When danger approaches, I stand at the front.",
+          "But leadership also means knowing when to rest. Even the king of beasts must acknowledge that community is strength. My lionesses are skilled hunters, and I trust their wisdom. Together, we thrive.",
+          "The land provides for us, and we must honor it. We hunt only what we need, allowing the herds to flourish. This balance has sustained life for countless generations."
+        ],
+        moral: "True leadership is about service and responsibility. We must protect our communities and live in harmony with nature, taking only what we need."
+      },
+      {
+        animal: '🐘',
+        name: 'Elephant',
+        title: "The Elephant's Memory",
+        subtitle: "A story of family and remembrance",
+        story: [
+          "I am an elephant, the keeper of memories. My family has walked these ancient paths for generations, and I carry the wisdom of my ancestors in my heart.",
+          "When I was young, my grandmother taught me where to find water during the dry season. She showed me which plants heal and which to avoid. This knowledge, passed down through generations, keeps our herd alive.",
+          "We elephants never forget our loved ones. When we pass the bones of family members, we stop and touch them gently with our trunks, honoring their memory. They live on through our stories and the trails they created.",
+          "Our herds are led by the wisest matriarchs, who guide us with patience and love. We protect our young together, teaching them to be gentle giants who care for the forest as it cares for us."
+        ],
+        moral: "Remember and honor those who came before us. Their wisdom guides our path, and their love for the land teaches us to be stewards of nature."
+      },
+      {
+        animal: '🦅',
+        name: 'Eagle',
+        title: "The Eagle's Vision",
+        subtitle: "A tale of perspective and freedom",
+        story: [
+          "From high above the mountains, I soar on thermal winds, seeing the world in ways others cannot. I am the eagle, blessed with vision that spans horizons.",
+          "Many creatures ask me, 'What do you see from up there?' I tell them: I see connections. The river that flows from the mountain feeds the valley. The forest that grows in the valley shelters countless lives. Everything is woven together.",
+          "When I hunt, I watch patiently. Rushing brings failure, but the right moment brings success. This patience, this ability to see the bigger picture, is what allows me to thrive.",
+          "I build my nest high in the cliffs, where my eaglets can learn to trust the wind. I teach them that fear of falling is natural, but so is the ability to fly. We must trust our wings."
+        ],
+        moral: "Step back to see the whole picture. When we understand how everything connects, we make better choices for our world."
+      },
+      {
+        animal: '🐝',
+        name: 'Bee',
+        title: "The Bee's Purpose",
+        subtitle: "A story of community and contribution",
+        story: [
+          "I may be small, but my purpose is mighty. I am a bee, and every flower I visit, every grain of pollen I carry, helps life flourish across the land.",
+          "In our hive, every bee has a role. Some gather nectar, some tend the young, some guard our home. No task is too small, for each supports the whole. Together, we are strong.",
+          "Humans often don't notice us until we're gone. But without us, many of the fruits, vegetables, and flowers they love would disappear. We are the hidden workers who keep ecosystems alive.",
+          "I visit hundreds of flowers each day, never thinking about reward, only purpose. In giving to the flowers—carrying their pollen—I receive nectar. This is the sacred exchange of nature: when we give, we receive."
+        ],
+        moral: "Every creature, no matter how small, has an important role in nature. Our individual actions create collective impact."
+      },
+      {
+        animal: '🐢',
+        name: 'Sea Turtle',
+        title: "The Turtle's Journey",
+        subtitle: "A tale of patience and resilience",
+        story: [
+          "For over a hundred years, I have swum the ocean currents. I am a sea turtle, ancient and patient, carrying the wisdom of the deep blue waters.",
+          "When I was born, I raced from the sandy beach to the ocean, guided by moonlight. Many of my siblings didn't make it, but I persevered. The ocean became my home, teaching me that life is a long journey.",
+          "I've witnessed the ocean change. Once crystal clear waters now carry strange debris. Coral gardens I visited in my youth now stand pale and silent. Yet I continue, because hope is found in persistence.",
+          "Each year, I return to the beach of my birth to lay my eggs. Though the journey is long and exhausting, I trust that new generations will carry on. This is my gift to the future."
+        ],
+        moral: "Patience and perseverance help us overcome challenges. We must protect our oceans and beaches for future generations."
+      },
+      {
+        animal: '🦉',
+        name: 'Owl',
+        title: "The Owl's Wisdom",
+        subtitle: "A story of observation and understanding",
+        story: [
+          "In the quiet of night, when others sleep, I awaken. I am the owl, the silent observer who sees what daylight hides.",
+          "Many call me wise, not because I know everything, but because I watch, listen, and learn. I observe the forest's rhythms—the rustle of mice, the whisper of wind, the dance of shadows under moonlight.",
+          "Young animals often rush to judgment, acting before understanding. I teach them: Watch first. Listen carefully. The forest speaks to those who pay attention. Every sound, every movement tells a story.",
+          "I hunt only what I need, taking the weak and sick, keeping prey populations healthy. This is not cruelty but balance—the ancient way that sustains all life in the forest."
+        ],
+        moral: "True wisdom comes from careful observation and patient understanding. Listen to nature's lessons."
+      }
+    ];
+
+    let currentStoryIndex = 0;
+
+    function createAnimalSelector() {
+      const selector = document.getElementById('animalSelector');
+      
+      animalStories.forEach((story, index) => {
+        const card = document.createElement('div');
+        card.className = `animal-card ${index === 0 ? 'active' : ''}`;
+        card.innerHTML = `
+          <div class="animal-icon">${story.animal}</div>
+          <div class="animal-name">${story.name}</div>
+        `;
+        card.onclick = () => selectStory(index, card);
+        selector.appendChild(card);
+      });
+    }
+
+    function selectStory(index, element) {
+      currentStoryIndex = index;
+      
+      document.querySelectorAll('.animal-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      element.classList.add('active');
+
+      displayStory();
+    }
+
+    function displayStory() {
+      const story = animalStories[currentStoryIndex];
+      
+      document.getElementById('storyCharacter').textContent = story.animal;
+      document.getElementById('storyTitle').textContent = story.title;
+      document.getElementById('storySubtitle').textContent = story.subtitle;
+
+      const storyHTML = story.story.map(paragraph => 
+        `<p>${paragraph}</p>`
+      ).join('') + `
+        <div class="story-moral">
+          <h4>🌿 Lesson from ${story.name}:</h4>
+          <p>${story.moral}</p>
+        </div>
+      `;
+
+      document.getElementById('storyContent').innerHTML = storyHTML;
+
+      const storyDisplay = document.getElementById('storyDisplay');
+      storyDisplay.style.animation = 'none';
+      setTimeout(() => {
+        storyDisplay.style.animation = 'fadeIn 0.8s ease';
+      }, 10);
+    }
+
+    function nextStory() {
+      currentStoryIndex = (currentStoryIndex + 1) % animalStories.length;
+      const cards = document.querySelectorAll('.animal-card');
+      selectStory(currentStoryIndex, cards[currentStoryIndex]);
+    }
+
+    function previousStory() {
+      currentStoryIndex = (currentStoryIndex - 1 + animalStories.length) % animalStories.length;
+      const cards = document.querySelectorAll('.animal-card');
+      selectStory(currentStoryIndex, cards[currentStoryIndex]);
+    }
+
+    createAnimalSelector();
+    displayStory();
+  </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree Stories - GreenLife Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tree-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .tree-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .tree-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 3px solid transparent;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tree-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .tree-card.active {
+      border-color: var(--sage-green);
+      background: rgba(143, 188, 143, 0.2);
+      box-shadow: 0 0 20px rgba(143, 188, 143, 0.5);
+    }
+
+    .tree-icon {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+      animation: sway 4s ease-in-out infinite;
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    .tree-name {
+      color: var(--dark-green);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .tree-age {
+      color: #666;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    .narrative-display {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid var(--glass-border);
+      min-height: 450px;
+      animation: fadeIn 0.8s ease;
+      position: relative;
+    }
+
+    .tree-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(143, 188, 143, 0.3);
+    }
+
+    .tree-character {
+      font-size: 6rem;
+      animation: sway 5s ease-in-out infinite;
+    }
+
+    .narrative-title {
+      flex: 1;
+    }
+
+    .narrative-title h2 {
+      color: var(--dark-green);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .narrative-subtitle {
+      color: #666;
+      font-style: italic;
+    }
+
+    .narrative-content {
+      color: #444;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    .narrative-content p {
+      margin-bottom: 1.5rem;
+    }
+
+    .seasons-lived {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--sage-green);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .tree-wisdom {
+      background: linear-gradient(135deg, rgba(143, 188, 143, 0.2), rgba(135, 206, 235, 0.2));
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      border-left: 4px solid var(--sage-green);
+    }
+
+    .tree-wisdom h4 {
+      color: var(--dark-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .tree-wisdom p {
+      color: #555;
+      font-weight: 500;
+    }
+
+    .rings-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .ring {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid rgba(143, 188, 143, 0.3);
+      position: relative;
+    }
+
+    .ring::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 2px solid rgba(143, 188, 143, 0.5);
+    }
+
+    .narrative-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .season-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .season-tag {
+      background: rgba(143, 188, 143, 0.2);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--dark-green);
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">← Back</a>
+  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>🌳 Whispers of the Forest</h1>
+      <p>Ancient trees share their timeless wisdom</p>
+    </div>
+
+    <div class="glass-card tree-container">
+      <h3 style="color: var(--dark-green); margin-bottom: 1.5rem; text-align: center;">Listen to the Ancient Ones</h3>
+      <div class="tree-selector" id="treeSelector"></div>
+    </div>
+
+    <div class="narrative-display" id="narrativeDisplay">
+      <div class="tree-header">
+        <div class="tree-character" id="narrativeCharacter">🌳</div>
+        <div class="narrative-title">
+          <h2 id="narrativeTitle">The Oak's Chronicle</h2>
+          <div class="seasons-lived" id="seasonsLived">
+            <span>🍂</span>
+            <span>300 years witnessed</span>
+          </div>
+          <p class="narrative-subtitle" id="narrativeSubtitle">Standing strong through centuries</p>
+        </div>
+      </div>
+      <div class="narrative-content" id="narrativeContent"></div>
+      <div class="narrative-controls">
+        <button class="btn" onclick="previousNarrative()">← Previous</button>
+        <button class="btn btn-secondary" onclick="nextNarrative()">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made with ❤️ for SDG 15 — Life on Land</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const treeNarratives = [
+      {
+        tree: '🌳',
+        name: 'Ancient Oak',
+        age: '300 years',
+        title: "The Oak's Chronicle",
+        subtitle: "Standing strong through centuries",
+        narrative: [
+          "I have stood in this forest clearing for three centuries. My roots reach deep into the earth, drawing from waters that have flowed since before your great-grandparents were born.",
+          "In my first spring, I was merely an acorn, buried by a forgetful squirrel. That small act of nature gave me life. Now, I provide homes for countless creatures—birds nest in my branches, squirrels raise families in my hollows, and insects thrive beneath my bark.",
+          "I've witnessed the forest change around me. I've seen young saplings grow into mighty trees, and old friends fall in storms. Each year, I add a new ring to my trunk, a silent record of droughts survived, abundant rains, harsh winters, and gentle springs.",
+          "Humans once came to seek shelter beneath my canopy. Children carved their names in my bark—marks I still carry. Lovers promised eternal devotion in my shade. Through it all, I remained, a steadfast witness to the passage of time.",
+          "My greatest pride is not my height or age, but the life I support. My fallen leaves feed the soil. My acorns feed the wildlife. My shade cools the earth. My presence anchors this ecosystem. This is what it means to truly live—to give more than you take."
+        ],
+        wisdom: "Strength comes from deep roots and patience. Like a tree, we must stay grounded while reaching for the sky, and support all life around us."
+      },
+      {
+        tree: '🌲',
+        name: 'Mountain Pine',
+        age: '150 years',
+        title: "The Pine's Resilience",
+        subtitle: "Weathering the mountain storms",
+        narrative: [
+          "High on the mountain slopes, where winds howl and snow falls heavy, I stand as a pine tree, bent but never broken.",
+          "My life is not easy. The soil is thin, the weather harsh, and resources scarce. Yet I thrive. My needles are designed to hold onto water, my bark thick to protect from cold, my branches flexible to bend with fierce winds.",
+          "Other trees might grow faster in the valley below, where water is plenty and soil is rich. But I chose a different path. Here, on this mountainside, I am needed. My roots prevent erosion. My presence slows avalanches. I am a guardian of the slopes.",
+          "Young pines often ask why we endure such hardship. I tell them: It is in the struggle that we find our purpose. Our resin, sharpened by cold winds, becomes medicine. Our wood, strengthened by harsh conditions, becomes the strongest timber.",
+          "I have learned that adversity shapes character. The same storms that threaten to break me have made me resilient. And in being resilient, I shelter others who seek refuge in my lee during mountain tempests."
+        ],
+        wisdom: "Adversity builds strength and character. The harshest conditions often create the strongest spirits. Stand firm in your purpose."
+      },
+      {
+        tree: '🌴',
+        name: 'Coconut Palm',
+        age: '80 years',
+        title: "The Palm's Adaptability",
+        subtitle: "Dancing with coastal winds",
+        narrative: [
+          "I am a palm tree, swaying gracefully on tropical shores where ocean meets land. My secret? I bend, I adapt, I dance with the wind rather than resist it.",
+          "When hurricanes rage and other trees snap, I bow low, my flexible trunk curving with the gale. When the storm passes, I rise again, unbroken. This is not weakness—this is wisdom.",
+          "I learned early that rigidity leads to breaking. The stiff tree cracks in the storm, but the flexible one survives. I apply this lesson to all of life. When seasons change, I adapt. When conditions shift, I adjust.",
+          "My roots spread wide rather than deep, gripping the sandy soil in a hundred directions. I cannot control the storms, but I can choose how I face them. I cannot change the salt-spray air, but I can learn to thrive in it.",
+          "The coconuts I bear travel on ocean currents to distant shores, starting new groves on far islands. This is my gift to the world—not just shade and food, but a lesson in flexibility and adaptation."
+        ],
+        wisdom: "Flexibility is strength. Adapt to changing conditions rather than breaking under pressure. Bend, don't break."
+      },
+      {
+        tree: '🌸',
+        name: 'Cherry Blossom',
+        age: '50 years',
+        title: "The Sakura's Beauty",
+        subtitle: "Finding grace in impermanence",
+        narrative: [
+          "I am a cherry blossom tree, and each spring, I burst into clouds of delicate pink blooms. But here is what makes me special: my flowers last only two weeks before falling like gentle snow.",
+          "People travel from far away to witness my blooming. They gather beneath my branches, celebrating the fleeting beauty. 'Why bloom so briefly?' young trees ask. I reply: 'It is the brevity that makes it precious.'",
+          "If I bloomed all year, would anyone stop to notice? Would children laugh and play beneath my petals? Would lovers promise devotion in my shade? No. It is because my beauty is temporary that it becomes treasured.",
+          "This is my lesson to the world: Nothing lasts forever, and that's what makes each moment valuable. The winter is long, but it makes spring more glorious. The bloom is brief, but it fills hearts with joy.",
+          "When my petals fall, covering the ground in pink, I am not sad. I know that in giving this gift—this moment of pure beauty—I have fulfilled my purpose. And next spring, I will bloom again, a cycle as old as time."
+        ],
+        wisdom: "Beauty and life are precious because they are temporary. Cherish each moment and celebrate the cycles of nature."
+      },
+      {
+        tree: '🍁',
+        name: 'Maple Tree',
+        age: '120 years',
+        title: "The Maple's Transformation",
+        subtitle: "Embracing change with grace",
+        narrative: [
+          "I am a maple tree, and I am famous for one thing: my ability to transform. Each autumn, I paint myself in brilliant reds, oranges, and golds before letting go.",
+          "Many trees fear the coming of fall, but I embrace it. Change is not death—it is transformation. My green leaves have served me well all summer, capturing sunlight and feeding my growth. But when their season ends, I honor them by turning them into art.",
+          "As my leaves fall, people gather beneath me, marveling at the colors. Children jump in the piles my leaves create. Artists paint my beauty. All this joy from simple leaves that have finished their work.",
+          "But here's the secret: I'm not just creating beauty—I'm preparing for spring. Each fallen leaf enriches the soil beneath me. I'm feeding the earth that feeds me, creating the conditions for new growth. Nothing is wasted in nature.",
+          "Young maples sometimes cling to their leaves, afraid to let go. I teach them: 'Trust the cycle. Let go of what no longer serves you. Transform, release, and know that spring will come again with new growth, new leaves, new possibilities.'"
+        ],
+        wisdom: "Embrace change as transformation, not loss. Let go of what no longer serves you to make room for new growth."
+      },
+      {
+        tree: '🌿',
+        name: 'Willow Tree',
+        age: '100 years',
+        title: "The Willow's Compassion",
+        subtitle: "Healing by the water's edge",
+        narrative: [
+          "I am a weeping willow, and I grow where water flows. My long, graceful branches sweep down to touch the stream, creating a curtain of green that offers shelter and solace.",
+          "People say I look sad, with my branches hanging low. But I am not weeping in sorrow—I am weeping in compassion. I bend low to be closer to those who need shelter. My form is not grief, but empathy.",
+          "Throughout my century of life, countless creatures have found refuge beneath my canopy. Deer drink safely hidden by my branches. Birds nest protected from predators. Fish spawn in the calm waters my roots create.",
+          "Humans, too, seek me out when they need quiet contemplation. They sit beneath my shade when their hearts are heavy, and somehow, being near running water and hanging branches brings them peace.",
+          "I have learned that true strength is not standing tall and rigid, but in being accessible, gentle, and present. My branches may touch the ground, but my roots run deep. I am strong precisely because I am soft."
+        ],
+        wisdom: "True strength includes gentleness and compassion. Create shelter for others and remain accessible to those who need you."
+      }
+    ];
+
+    let currentNarrativeIndex = 0;
+
+    function createTreeSelector() {
+      const selector = document.getElementById('treeSelector');
+      
+      treeNarratives.forEach((narrative, index) => {
+        const card = document.createElement('div');
+        card.className = `tree-card ${index === 0 ? 'active' : ''}`;
+        card.innerHTML = `
+          <div class="tree-icon">${narrative.tree}</div>
+          <div class="tree-name">${narrative.name}</div>
+          <div class="tree-age">${narrative.age} old</div>
+        `;
+        card.onclick = () => selectNarrative(index, card);
+        selector.appendChild(card);
+      });
+    }
+
+    function selectNarrative(index, element) {
+      currentNarrativeIndex = index;
+      
+      document.querySelectorAll('.tree-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      element.classList.add('active');
+
+      displayNarrative();
+    }
+
+    function displayNarrative() {
+      const narrative = treeNarratives[currentNarrativeIndex];
+      
+      document.getElementById('narrativeCharacter').textContent = narrative.tree;
+      document.getElementById('narrativeTitle').textContent = narrative.title;
+      document.getElementById('narrativeSubtitle').textContent = narrative.subtitle;
+      document.getElementById('seasonsLived').innerHTML = `
+        <span>🍂</span>
+        <span>${narrative.age} witnessed</span>
+      `;
+
+      const narrativeHTML = narrative.narrative.map(paragraph => 
+        `<p>${paragraph}</p>`
+      ).join('') + `
+        <div class="tree-wisdom">
+          <h4>🌱 Wisdom from the ${narrative.name}:</h4>
+          <p>${narrative.wisdom}</p>
+        </div>
+      `;
+
+      document.getElementById('narrativeContent').innerHTML = narrativeHTML;
+
+      const narrativeDisplay = document.getElementById('narrativeDisplay');
+      narrativeDisplay.style.animation = 'none';
+      setTimeout(() => {
+        narrativeDisplay.style.animation = 'fadeIn 0.8s ease';
+      }, 10);
+    }
+
+    function nextNarrative() {
+      currentNarrativeIndex = (currentNarrativeIndex + 1) % treeNarratives.length;
+      const cards = document.querySelectorAll('.tree-card');
+      selectNarrative(currentNarrativeIndex, cards[currentNarrativeIndex]);
+    }
+
+    function previousNarrative() {
+      currentNarrativeIndex = (currentNarrativeIndex - 1 + treeNarratives.length) % treeNarratives.length;
+      const cards = document.querySelectorAll('.tree-card');
+      selectNarrative(currentNarrativeIndex, cards[currentNarrativeIndex]);
+    }
+
+    createTreeSelector();
+    displayNarrative();
+  </script>
+</body>
+</html>
