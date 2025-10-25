@@ -257,5 +257,30 @@
 
     displayLocationCards();
   </script>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="social-icons">
+      <a href="#" class="social-icon">🌍</a>
+      <a href="#" class="social-icon">🌿</a>
+      <a href="#" class="social-icon">🌳</a>
+      <a href="#" class="social-icon">🌱</a>
+    </div>
+    <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
+    <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
+    
+    <!-- Copyright line -->
+    <p style="color: #888; font-size: 0.8rem; margin-top: 1rem;">
+      © <span id="year"></span> Chloris — All Rights Reserved 🌎
+    </p>
+  </div>
+
+  <script>
+    // Automatically update the year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</footer>
+
+  
 </body>
 </html>
