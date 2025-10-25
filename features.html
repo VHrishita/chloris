@@ -3,12 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GreenLife Tracker - Caring for Life on Land 🌳</title>
+  <title>Chloris - Caring for Life on Land 🌳</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Navbar styling */
+    nav {
+      display:flex;
+      justify-content:center;
+      gap:2rem;
+      padding:1rem 0;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top:0;
+      z-index:100;
+    }
+    nav a {
+      color: var(--dark-green);
+      font-weight:600;
+      text-decoration:none;
+    }
+    nav button {
+      background: transparent;
+      border:2px solid var(--dark-green);
+      color: var(--dark-green);
+      font-weight:600;
+      padding:0.3rem 1rem;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
     .hero {
       min-height: 100vh;
       display: flex;
@@ -116,7 +143,15 @@
   </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">← Back</a>
+  <!-- Navbar -->
+  <nav>
+    <a href="features.html">Features</a>
+    <a href="aboutUs.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+
+  <a href="index.html" class="back-btn">← Back</a>
   <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>  
 
   <section class="features">
@@ -128,93 +163,76 @@
           <h3>Plant Growth Tracker</h3>
           <p>Monitor and track your plant's growth journey with beautiful visualizations</p>
         </a>
-
         <a href="animal-tracker.html" class="feature-card glass-card">
           <div class="feature-icon">🦏</div>
           <h3>Animal Tracker</h3>
-          <p>Observe wildlife patterns and  discover the secrets of the animal kingdom</p>
+          <p>Observe wildlife patterns and discover the secrets of the animal kingdom</p>
         </a>
-
         <a href="biodiversity.html" class="feature-card glass-card">
           <div class="feature-icon">🗺️</div>
           <h3>Biodiversity Map</h3>
           <p>Explore diverse ecosystems and wildlife locations around the world</p>
         </a>
-
-
         <a href="quiz.html" class="feature-card glass-card">
           <div class="feature-icon">🧩</div>
           <h3>Daily Eco Quiz</h3>
           <p>Test your knowledge and learn something new each day!</p>
         </a>
-
         <a href="trash-sorter.html" class="feature-card glass-card">
           <div class="feature-icon">🎮</div>
           <h3>Mini Game</h3>
           <p>Test your gaming skills</p>
         </a>
-        
         <a href="news.html" class="feature-card glass-card">
           <div class="feature-icon">📰</div>
           <h3>News letter</h3>
           <p>Read about the latest news</p>
         </a>
-
-        
         <a href="eco-tips.html" class="feature-card glass-card">
           <div class="feature-icon">💡</div>
           <h3>Eco Tips</h3>
           <p>Daily tips and advice for sustainable living and environmental care</p>
         </a>
-
         <a href="weather-advice.html" class="feature-card glass-card">
           <div class="feature-icon">🌦️</div>
           <h3>Weather Advice</h3>
           <p>Get personalized environmental tips based on your local weather</p>
         </a>
-
         <a href="plant-health.html" class="feature-card glass-card">
           <div class="feature-icon">🧠</div>
           <h3>Plant Health Detector</h3>
           <p>Upload plant photos to get instant health assessments and care tips</p>
         </a>
-
         <a href="community-wall.html" class="feature-card glass-card">
           <div class="feature-icon">🪴</div>
           <h3>Community Wall</h3>
           <p>Share and explore beautiful nature photography from our community</p>
         </a>
-
         <a href="leaderboard.html" class="feature-card glass-card">
           <div class="feature-icon">🏆</div>
           <h3>Eco Leaderboard</h3>
           <p>See top contributors making a difference for our planet</p>
         </a>
-
         <a href="avatar-customizer.html" class="feature-card glass-card">
           <div class="feature-icon">🎨</div>
           <h3>Avatar Customizer</h3>
           <p>Personalize your eco-avatar and showcase your nature spirit</p>
         </a>
-
         <a href="nature-sounds.html" class="feature-card glass-card">
           <div class="feature-icon">🎧</div>
           <h3>Nature Sounds</h3>
           <p>Relax with calming forest and rain soundscapes</p>
         </a>
-
         <a href="achievements.html" class="feature-card glass-card">
           <div class="feature-icon">✨</div>
           <h3>Achievements</h3>
           <p>Unlock badges and celebrate your environmental milestones</p>
         </a>
-
         <a href="animal-stories.html" class="feature-card glass-card">
           <div class="feature-icon">🦁</div>
           <h3>Tales from the Wild</h3>
           <p>Listen to wisdom and stories shared by our animal friends</p>
         </a>
-
         <a href="tree-stories.html" class="feature-card glass-card">
           <div class="feature-icon">🌳</div>
           <h3>Whispers of the Forest</h3>
@@ -233,11 +251,9 @@
         <a href="#" class="social-icon">🌱</a>
       </div>
       <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
-            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
-
+      <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
     </div>
   </footer>
-
 
   <script type="module">
     import { auth } from './firebase.js';
@@ -257,8 +273,6 @@
       }
     });
   </script>
-
-
   <script src="app.js"></script>
 </body>
 </html>
