@@ -64,9 +64,12 @@ It encourages users to interact meaningfully with their surroundings and see how
 ## 🤝 Contributors
 
 Project by **Group 17 - AIML MINI PROJECT**  
-Built with love by students passionate about nature, sustainability, and technology �
+Built with love by students passionate about nature, sustainability, and technology 
+
 Vempali Hrishita - Backend
+
 Ashika V - Frontend
+
 A Deepthi - Research & Content
 
 ---
