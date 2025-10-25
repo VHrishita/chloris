@@ -55,12 +55,6 @@ It encourages users to interact meaningfully with their surroundings and see how
 
 ---
 
-## 📸 Screenshots
-
-*(Add a few screenshots of your live site — like Plant Tracker, Wildlife Tracker, or Dashboard sections)*
-
----
-
 ## 🚀 Live Site
 
 🔗 Visit here → **[https://vhrishita.github.io/chloris/](https://vhrishita.github.io/chloris/)**
@@ -69,8 +63,11 @@ It encourages users to interact meaningfully with their surroundings and see how
 
 ## 🤝 Contributors
 
-Project by **Group 17**  
-Built with love by students passionate about nature, sustainability, and technology 🌿
+Project by **Group 17 - AIML MINI PROJECT**  
+Built with love by students passionate about nature, sustainability, and technology �
+Vempali Hrishita - Backend
+Ashika V - Frontend
+A Deepthi - Research & Content
 
 ---
 
