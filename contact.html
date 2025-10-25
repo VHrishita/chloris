@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chloris - Contact Us 🌳</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    nav {
+      display:flex;
+      justify-content:center;
+      gap:2rem;
+      padding:1rem 0;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top:0;
+      z-index:100;
+    }
+    nav a {
+      color: var(--dark-green);
+      font-weight:600;
+      text-decoration:none;
+    }
+    nav button {
+      background: transparent;
+      border:2px solid var(--dark-green);
+      color: var(--dark-green);
+      font-weight:600;
+      padding:0.3rem 1rem;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    .contact-section {
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .contact-section h2 {
+      text-align: center;
+      color: var(--dark-green);
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+    }
+    .contact-section label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-green);
+    }
+    .contact-section input,
+    .contact-section textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    .contact-section button {
+      background: var(--dark-green);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <a href="features.html">Features</a>
+    <a href="aboutUs.html">About Us</a>
+    <a href="contact.html">Contact Us</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+
+  <section class="contact-section">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" rows="5" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="#" class="social-icon">🌍</a>
+        <a href="#" class="social-icon">🌿</a>
+        <a href="#" class="social-icon">🌳</a>
+        <a href="#" class="social-icon">🌱</a>
+      </div>
+      <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
+      <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
+    </div>
+  </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+  <script type="module">
+    import { auth } from './firebase.js';
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+      alert('You have been logged out.');
+      window.location.href = 'index.html';
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Firebase Firestore config
+    const firebaseConfig = {
+      apiKey: "AIzaSyByp9iWZ0ZsiDIvi84JurZUJohUfPMpNbY",
+      authDomain: "chloris-bc7c7.firebaseapp.com",
+      projectId: "chloris-bc7c7",
+      storageBucket: "chloris-bc7c7.appspot.com",
+      messagingSenderId: "198937142609",
+      appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Handle contact form submission
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      db.collection('contact_messages').add({
+        name,
+        email,
+        message,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        alert('Message sent successfully! 🌿');
+        e.target.reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Failed to send message.');
+      });
+    });
+  </script>
+</body>
+</html>
