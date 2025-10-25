@@ -3,54 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biodiversity Map - GreenLife Tracker</title>
+  <title>Biodiversity Map - Chloris</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <style>
-    .map-container {
-      position: relative;
-      max-width: 1000px;
-      margin: 0 auto;
+    #map {
+      height: 500px;
+      width: 100%;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      z-index: 1;
     }
 
-    .map-image {
-      width: 100%;
-      height: auto;
-      display: block;
+    .leaflet-popup-content {
+      font-family: 'Poppins', sans-serif;
+      color: #2c3e50;
     }
 
-    .map-pin {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      background: var(--sage-green);
-      border: 3px solid white;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-      animation: pulse 2s infinite;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .map-pin:hover {
-      transform: scale(1.3);
-      z-index: 10;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(143, 188, 143, 0.7);
-      }
-      50% {
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 15px rgba(143, 188, 143, 0);
-      }
+    .leaflet-popup-content strong {
+      color: var(--dark-green);
     }
 
     .location-cards {
@@ -78,75 +54,22 @@
       color: #555;
       line-height: 1.6;
     }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 20px;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-      animation: slideInUp 0.5s ease;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 2rem;
-      cursor: pointer;
-      color: #999;
-      transition: color 0.3s ease;
-    }
-
-    .close-modal:hover {
-      color: var(--dark-green);
-    }
   </style>
 </head>
 <body>
   <a href="features.html" class="back-btn">← Back</a>
-  <div id="avatarDisplay" class="avatar-display" style="display: none;"></div>
 
   <div class="container">
     <div class="page-header">
       <h1>🗺️ Biodiversity Map</h1>
-      <p>Explore ecosystems and wildlife around the world</p>
+      <p>Explore real ecosystems and wildlife around the world</p>
     </div>
 
     <div class="glass-card">
-      <div class="map-container">
-        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200&q=80" alt="World Map" class="map-image">
-        <div class="map-pin" style="top: 25%; left: 15%;" data-location="0">🦁</div>
-        <div class="map-pin" style="top: 60%; left: 70%;" data-location="1">🐨</div>
-        <div class="map-pin" style="top: 35%; left: 50%;" data-location="2">🐼</div>
-        <div class="map-pin" style="top: 45%; left: 25%;" data-location="3">🦅</div>
-        <div class="map-pin" style="top: 70%; left: 40%;" data-location="4">🦒</div>
-      </div>
+      <div id="map"></div>
     </div>
 
     <div class="location-cards" id="locationCards"></div>
-  </div>
-
-  <div id="locationModal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
-      <div id="modalBody"></div>
-    </div>
   </div>
 
   <footer class="footer">
@@ -161,7 +84,9 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script>
     const locations = [
       {
@@ -169,92 +94,85 @@
         icon: '🦁',
         species: 'Lions, Elephants, Zebras',
         description: 'The African savanna is home to diverse wildlife and vast grasslands.',
-        threat: 'Habitat loss due to agriculture'
+        threat: 'Habitat loss due to agriculture',
+        coords: [-1.9577, 34.4731] // Kenya region
       },
       {
         name: 'Australian Forests',
         icon: '🐨',
         species: 'Koalas, Kangaroos, Wombats',
         description: 'Unique eucalyptus forests supporting endemic species.',
-        threat: 'Deforestation and climate change'
+        threat: 'Deforestation and climate change',
+        coords: [-25.2744, 133.7751]
       },
       {
         name: 'Asian Mountains',
         icon: '🐼',
         species: 'Giant Pandas, Red Pandas, Snow Leopards',
         description: 'Mountain bamboo forests of Asia.',
-        threat: 'Habitat fragmentation'
+        threat: 'Habitat fragmentation',
+        coords: [31.2304, 103.9921] // Sichuan, China
       },
       {
         name: 'European Highlands',
         icon: '🦅',
         species: 'Golden Eagles, Alpine Ibex',
         description: 'Mountain ranges with diverse alpine ecosystems.',
-        threat: 'Tourism impact and development'
+        threat: 'Tourism impact and development',
+        coords: [46.8182, 8.2275] // Switzerland
       },
       {
         name: 'African Grasslands',
         icon: '🦒',
         species: 'Giraffes, Wildebeest, Rhinos',
         description: 'Open grasslands supporting large herbivores.',
-        threat: 'Poaching and land conversion'
+        threat: 'Poaching and land conversion',
+        coords: [-19.0154, 29.1549] // Zimbabwe
       }
     ];
 
+    // Initialize map
+    const map = L.map('map').setView([10, 20], 2);
+
+    // Add tile layer (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Add markers
+    locations.forEach(loc => {
+      const marker = L.marker(loc.coords).addTo(map);
+      marker.bindPopup(`
+        <div style="text-align:center;">
+          <div style="font-size:2rem;">${loc.icon}</div>
+          <strong>${loc.name}</strong><br>
+          <em>${loc.species}</em><br><br>
+          ${loc.description}<br>
+          <p style="color:#e74c3c; margin-top:0.5rem;">⚠️ ${loc.threat}</p>
+        </div>
+      `);
+    });
+
+    // Display info cards below map
     function displayLocationCards() {
       const container = document.getElementById('locationCards');
       container.innerHTML = '';
 
-      locations.forEach((location, index) => {
+      locations.forEach(location => {
         const card = document.createElement('div');
         card.className = 'glass-card location-card';
-        card.onclick = () => showLocationModal(index);
         card.innerHTML = `
           <div class="location-icon">${location.icon}</div>
           <h3>${location.name}</h3>
           <div class="location-info">
             <p><strong>Species:</strong> ${location.species}</p>
             <p>${location.description}</p>
+            <p style="color:#e74c3c;"><strong>Threat:</strong> ${location.threat}</p>
           </div>
         `;
+        card.onclick = () => map.flyTo(location.coords, 5, { animate: true, duration: 2 });
         container.appendChild(card);
       });
-    }
-
-    function showLocationModal(index) {
-      const location = locations[index];
-      const modal = document.getElementById('locationModal');
-      const modalBody = document.getElementById('modalBody');
-
-      modalBody.innerHTML = `
-        <div style="text-align: center;">
-          <div style="font-size: 4rem; margin-bottom: 1rem;">${location.icon}</div>
-          <h2 style="color: var(--dark-green); margin-bottom: 1rem;">${location.name}</h2>
-          <p style="margin-bottom: 1rem;"><strong>Key Species:</strong> ${location.species}</p>
-          <p style="margin-bottom: 1rem;">${location.description}</p>
-          <p style="color: #e74c3c; font-weight: 600;">⚠️ Threat: ${location.threat}</p>
-        </div>
-      `;
-
-      modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('locationModal').style.display = 'none';
-    }
-
-    document.querySelectorAll('.map-pin').forEach(pin => {
-      pin.addEventListener('click', () => {
-        const locationIndex = parseInt(pin.getAttribute('data-location'));
-        showLocationModal(locationIndex);
-      });
-    });
-
-    window.onclick = function(event) {
-      const modal = document.getElementById('locationModal');
-      if (event.target === modal) {
-        closeModal();
-      }
     }
 
     displayLocationCards();
