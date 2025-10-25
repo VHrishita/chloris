@@ -4,28 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Chloris</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: Poppins, sans-serif;
       margin: 0;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #8fbc8f;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(143,188,143,0.9), rgba(135,206,235,0.8));
+      overflow: hidden;
+      position: relative;
     }
 
-    .overlay {
+    /* Falling leaves animation */
+    .leaf {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      pointer-events: none;
-      z-index: 0;
+      top: -50px;
+      animation: fall linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
     }
 
     .container {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(15px);
       border-radius: 20px;
@@ -33,6 +44,13 @@
       width: 350px;
       text-align: center;
       color: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     input {
@@ -41,6 +59,7 @@
       margin: 0.5rem 0;
       border: none;
       border-radius: 8px;
+      outline: none;
     }
 
     button {
@@ -53,17 +72,18 @@
       color: #fff;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
     }
 
     button:hover {
       background: #1b5e20;
+      transform: scale(1.03);
     }
 
     .toggle {
       margin-top: 1rem;
       cursor: pointer;
-      color: #c8e6c9;
+      color: #7da153;
     }
 
     .toggle span {
@@ -72,7 +92,19 @@
   </style>
 </head>
 <body>
-  <div class="overlay"></div>
+  <!-- Falling leaves -->
+  <script>
+    for(let i=0;i<12;i++){
+      const leaf=document.createElement('div');
+      leaf.classList.add('leaf');
+      leaf.textContent='🍃';
+      leaf.style.left=Math.random()*100+'vw';
+      leaf.style.fontSize=Math.random()*20+20+'px';
+      leaf.style.animationDuration=Math.random()*5+5+'s';
+      document.body.appendChild(leaf);
+    }
+  </script>
+
   <div class="container">
     <h2 id="formTitle">Login</h2>
     <input type="email" id="email" placeholder="Email" required />
