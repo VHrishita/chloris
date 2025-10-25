@@ -54,6 +54,24 @@
       color: #555;
       line-height: 1.6;
     }
+
+    .type-label {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .animal-label {
+      background-color: #ffedd5;
+      color: #c2410c;
+    }
+
+    .plant-label {
+      background-color: #dcfce7;
+      color: #166534;
+    }
   </style>
 </head>
 <body>
@@ -62,7 +80,7 @@
   <div class="container">
     <div class="page-header">
       <h1>🗺️ Biodiversity Map</h1>
-      <p>Explore real ecosystems and wildlife around the world</p>
+      <p>Explore wildlife 🐾 and vegetation 🌿 across the world</p>
     </div>
 
     <div class="glass-card">
@@ -89,59 +107,120 @@
 
   <script>
     const locations = [
+      // --- Animal Locations ---
       {
         name: 'African Savanna',
         icon: '🦁',
+        type: 'Animal',
         species: 'Lions, Elephants, Zebras',
-        description: 'The African savanna is home to diverse wildlife and vast grasslands.',
+        description: 'Vast grasslands supporting diverse wildlife.',
         threat: 'Habitat loss due to agriculture',
-        coords: [-1.9577, 34.4731] // Kenya region
+        coords: [-1.9577, 34.4731]
       },
       {
         name: 'Australian Forests',
         icon: '🐨',
+        type: 'Animal',
         species: 'Koalas, Kangaroos, Wombats',
-        description: 'Unique eucalyptus forests supporting endemic species.',
+        description: 'Unique eucalyptus forests supporting endemic animals.',
         threat: 'Deforestation and climate change',
         coords: [-25.2744, 133.7751]
       },
       {
         name: 'Asian Mountains',
         icon: '🐼',
+        type: 'Animal',
         species: 'Giant Pandas, Red Pandas, Snow Leopards',
         description: 'Mountain bamboo forests of Asia.',
         threat: 'Habitat fragmentation',
-        coords: [31.2304, 103.9921] // Sichuan, China
+        coords: [31.2304, 103.9921]
       },
       {
         name: 'European Highlands',
         icon: '🦅',
+        type: 'Animal',
         species: 'Golden Eagles, Alpine Ibex',
-        description: 'Mountain ranges with diverse alpine ecosystems.',
+        description: 'Alpine ecosystems with rich biodiversity.',
         threat: 'Tourism impact and development',
-        coords: [46.8182, 8.2275] // Switzerland
+        coords: [46.8182, 8.2275]
       },
       {
         name: 'African Grasslands',
         icon: '🦒',
+        type: 'Animal',
         species: 'Giraffes, Wildebeest, Rhinos',
         description: 'Open grasslands supporting large herbivores.',
         threat: 'Poaching and land conversion',
-        coords: [-19.0154, 29.1549] // Zimbabwe
+        coords: [-19.0154, 29.1549]
+      },
+
+      // --- Plant / Vegetation Locations ---
+      {
+        name: 'Amazon Rainforest',
+        icon: '🌴',
+        type: 'Plant',
+        species: 'Mahogany, Orchids, Giant Ferns',
+        description: 'The largest tropical rainforest on Earth.',
+        threat: 'Deforestation and illegal logging',
+        coords: [-3.4653, -62.2159]
+      },
+      {
+        name: 'Sundarbans Mangroves',
+        icon: '🍃',
+        type: 'Plant',
+        species: 'Mangroves, Saltwater Grass, Palm',
+        description: 'Mangrove forests vital for coastal protection and wildlife.',
+        threat: 'Rising sea levels and pollution',
+        coords: [21.9497, 89.1833]
+      },
+      {
+        name: 'Himalayan Flora',
+        icon: '🌸',
+        type: 'Plant',
+        species: 'Rhododendron, Juniper, Himalayan Blue Poppy',
+        description: 'Rare alpine vegetation found in the Himalayas.',
+        threat: 'Glacial melt and overgrazing',
+        coords: [28.3949, 84.1240]
+      },
+      {
+        name: 'Sahara Desert Oases',
+        icon: '🌵',
+        type: 'Plant',
+        species: 'Date Palms, Desert Grasses, Acacia',
+        description: 'Unique vegetation surviving extreme desert conditions.',
+        threat: 'Desertification and water scarcity',
+        coords: [23.4162, 25.6628]
+      },
+      {
+        name: 'Great Plains Prairie',
+        icon: '🌾',
+        type: 'Plant',
+        species: 'Buffalo Grass, Sunflowers, Wild Indigo',
+        description: 'North American grasslands rich in plant life.',
+        threat: 'Agricultural expansion',
+        coords: [39.0119, -98.4842]
       }
     ];
 
     // Initialize map
     const map = L.map('map').setView([10, 20], 2);
 
-    // Add tile layer (OpenStreetMap)
+    // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Add markers
+    // Custom marker icons (circle with color)
+    function markerColor(type) {
+      return type === 'Animal' ? 'orange' : 'green';
+    }
+
     locations.forEach(loc => {
-      const marker = L.marker(loc.coords).addTo(map);
+      const iconHtml = `<div style="background:${markerColor(loc.type)}; color:white; font-size:1.5rem; border-radius:50%; width:35px; height:35px; display:flex; align-items:center; justify-content:center;">${loc.icon}</div>`;
+      const icon = L.divIcon({ html: iconHtml, className: '', iconSize: [35,35] });
+
+      const marker = L.marker(loc.coords, { icon }).addTo(map);
+
       marker.bindPopup(`
         <div style="text-align:center;">
           <div style="font-size:2rem;">${loc.icon}</div>
@@ -153,7 +232,7 @@
       `);
     });
 
-    // Display info cards below map
+    // Cards
     function displayLocationCards() {
       const container = document.getElementById('locationCards');
       container.innerHTML = '';
@@ -162,6 +241,7 @@
         const card = document.createElement('div');
         card.className = 'glass-card location-card';
         card.innerHTML = `
+          <div class="type-label ${location.type === 'Animal' ? 'animal-label' : 'plant-label'}">${location.type}</div>
           <div class="location-icon">${location.icon}</div>
           <h3>${location.name}</h3>
           <div class="location-info">
