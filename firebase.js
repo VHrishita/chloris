@@ -1,12 +1,6 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -18,25 +12,19 @@ const firebaseConfig = {
   appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
 };
 
-// ✅ Initialize the app
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// ✅ Initialize Firebase Auth and Firestore
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ✅ Export them so you can use anywhere
-export { auth, db };
-
-// ✅ Helper functions
+// Authentication helpers
 export async function signUp(email, password) {
-  return await createUserWithEmailAndPassword(auth, email, password);
+  return createUserWithEmailAndPassword(auth, email, password);
 }
 
 export async function logIn(email, password) {
-  return await signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password);
 }
 
 export async function logOut() {
-  return await signOut(auth);
+  return auth.signOut();
 }
