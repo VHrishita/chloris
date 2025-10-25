@@ -7,127 +7,41 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
+  <!-- Firebase App & Firestore -->
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
 
-<script>
+  <script>
     const firebaseConfig = {
-  apiKey: "AIzaSyByp9iWZ0ZsiDIvi84JurZUJohUfPMpNbY",
-  authDomain: "chloris-bc7c7.firebaseapp.com",
-  projectId: "chloris-bc7c7",
-  storageBucket: "chloris-bc7c7.appspot.com",
-  messagingSenderId: "198937142609",
-  appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
-};
+      apiKey: "AIzaSyByp9iWZ0ZsiDIvi84JurZUJohUfPMpNbY",
+      authDomain: "chloris-bc7c7.firebaseapp.com",
+      projectId: "chloris-bc7c7",
+      storageBucket: "chloris-bc7c7.appspot.com",
+      messagingSenderId: "198937142609",
+      appId: "1:198937142609:web:93b9b118d7fae2d7705f70"
+    };
 
-// Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore(); // Firestore instance
-</script>
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 
   <style>
-    .plant-form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: var(--dark-green);
-      font-weight: 600;
-    }
-
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 12px 20px;
-      border: 2px solid var(--glass-border);
-      border-radius: 10px;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.7);
-      transition: all 0.3s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-      outline: none;
-      border-color: var(--sage-green);
-      background: white;
-    }
-
-    .progress-container {
-      margin-top: 2rem;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--sage-green), var(--dark-green));
-      border-radius: 15px;
-      transition: width 1s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-    }
-
-    .plant-list {
-      margin-top: 3rem;
-    }
-
-    .plant-item {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      padding: 1.5rem;
-      border-radius: 15px;
-      margin-bottom: 1rem;
-      border: 1px solid var(--glass-border);
-      animation: slideInUp 0.5s ease;
-    }
-
-    .plant-item h3 {
-      color: var(--dark-green);
-      margin-bottom: 1rem;
-    }
-
-    .plant-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .stat {
-      background: rgba(255, 255, 255, 0.5);
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: #666;
-    }
-
-    .stat-value {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--dark-green);
-    }
+    /* Keep your original style exactly */
+    .plant-form { max-width: 600px; margin: 0 auto; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; color: var(--dark-green); font-weight: 600; }
+    .form-group input, .form-group select { width: 100%; padding: 12px 20px; border: 2px solid var(--glass-border); border-radius: 10px; font-size: 1rem; background: rgba(255, 255, 255, 0.7); transition: all 0.3s ease; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--sage-green); background: white; }
+    .progress-container { margin-top: 2rem; }
+    .progress-bar { width: 100%; height: 30px; background: rgba(255, 255, 255, 0.3); border-radius: 15px; overflow: hidden; position: relative; box-shadow: inset 0 2px 8px rgba(0,0,0,0.1); }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--sage-green), var(--dark-green)); border-radius: 15px; transition: width 1s ease; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
+    .plant-list { margin-top: 3rem; }
+    .plant-item { background: var(--glass-bg); backdrop-filter: blur(20px); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid var(--glass-border); animation: slideInUp 0.5s ease; }
+    .plant-item h3 { color: var(--dark-green); margin-bottom: 1rem; }
+    .plant-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+    .stat { background: rgba(255, 255, 255, 0.5); padding: 0.8rem; border-radius: 8px; }
+    .stat-label { font-size: 0.85rem; color: #666; }
+    .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--dark-green); }
   </style>
 </head>
 <body>
@@ -147,58 +61,31 @@
           <label for="plantName">Plant Name</label>
           <input type="text" id="plantName" placeholder="e.g., Monstera Deliciosa" required>
         </div>
-
         <div class="form-group">
           <label for="daysWatered">Days Watered</label>
           <input type="number" id="daysWatered" placeholder="e.g., 15" min="0" required>
         </div>
-
         <div class="form-group">
           <label for="currentHeight">Current Height (cm)</label>
           <input type="number" id="currentHeight" placeholder="e.g., 25" min="0" step="0.1" required>
         </div>
-
         <div class="form-group">
           <label for="latitude">Latitude *</label>
           <input type="number" step="0.00000001" id="latitude" placeholder="0.0000000" required>
         </div>
-
         <div class="form-group">
           <label for="longitude">Longitude *</label>
           <input type="number" step="0.00000001" id="longitude" placeholder="0.0000000" required>
         </div>
-
-        <!-- Fancy location button like Wildlife Tracker -->
-        <button
-          type="button"
-          onclick="getLocation()"
-          style="
-            width: 100%;
-            padding: 0.5rem 1rem;
-            border: 2px solid #2f5233; 
-            color: #2f5233;
-            font-weight: 500;
-            border-radius: 0.5rem;
-            background: transparent;
-            cursor: pointer;
-            transition: 0.3s;
-          "
-          onmouseover="this.style.backgroundColor='#e6f2e6'"
-          onmouseout="this.style.backgroundColor='transparent'"
-        >
-          📍 Use My Current Location
-        </button>
-
+        <button type="button" onclick="getLocation()" style="width:100%; padding:0.5rem 1rem; border:2px solid #2f5233; color:#2f5233; font-weight:500; border-radius:0.5rem; background:transparent; cursor:pointer; transition:0.3s;" onmouseover="this.style.backgroundColor='#e6f2e6'" onmouseout="this.style.backgroundColor='transparent'">📍 Use My Current Location</button>
         <div class="form-group">
           <label for="planted_date">Date Planted *</label>
           <input type="date" id="planted_date" required>
         </div>
-
         <div class="form-group">
           <label for="photo_url">Photo URL</label>
           <input type="url" id="photo_url" placeholder="https://example.com/plant-photo.jpg">
         </div>
-
         <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Log Plant 🌿</button>
       </form>
     </div>
@@ -215,24 +102,68 @@
         <a href="#" class="social-icon">🌱</a>
       </div>
       <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
-            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
-
+      <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
     </div>
   </footer>
 
   <script>
-    let plants = JSON.parse(localStorage.getItem('plants')) || [];
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
+    });
 
-    function displayPlants() {
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            document.getElementById('latitude').value = position.coords.latitude.toFixed(8);
+            document.getElementById('longitude').value = position.coords.longitude.toFixed(8);
+          },
+          () => alert('Unable to get your location')
+        );
+      } else {
+        alert('Geolocation is not supported by this browser.');
+      }
+    }
+
+    const plantForm = document.getElementById('plantForm');
+    plantForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const plantData = {
+        name: document.getElementById('plantName').value,
+        daysWatered: parseInt(document.getElementById('daysWatered').value),
+        currentHeight: parseFloat(document.getElementById('currentHeight').value),
+        latitude: parseFloat(document.getElementById('latitude').value),
+        longitude: parseFloat(document.getElementById('longitude').value),
+        planted_date: document.getElementById('planted_date').value,
+        photo_url: document.getElementById('photo_url').value || '',
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await db.collection('plants').add(plantData);
+        alert('Plant logged successfully! 🌿');
+        plantForm.reset();
+        document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
+        displayPlants();
+      } catch (err) {
+        console.error(err);
+        alert('Failed to log plant.');
+      }
+    });
+
+    async function displayPlants() {
       const plantList = document.getElementById('plantList');
       plantList.innerHTML = '';
 
-      if (plants.length === 0) {
-        plantList.innerHTML = '<p style="text-align: center; color: #666; margin-top: 2rem;">No plants added yet. Start tracking your first plant!</p>';
+      const snapshot = await db.collection('plants').orderBy('created_at', 'desc').get();
+      if (snapshot.empty) {
+        plantList.innerHTML = '<p style="text-align:center; color:#666; margin-top:2rem;">No plants added yet. Start tracking your first plant!</p>';
         return;
       }
 
-      plants.forEach((plant) => {
+      snapshot.forEach(doc => {
+        const plant = doc.data();
         const maxHeight = 100;
         const healthProgress = Math.min((plant.daysWatered / 30) * 100, 100);
         const heightProgress = Math.min((plant.currentHeight / maxHeight) * 100, 100);
@@ -242,14 +173,8 @@
         plantCard.innerHTML = `
           <h3>${plant.name}</h3>
           <div class="plant-stats">
-            <div class="stat">
-              <div class="stat-label">Days Watered</div>
-              <div class="stat-value">${plant.daysWatered}</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Height (cm)</div>
-              <div class="stat-value">${plant.currentHeight}</div>
-            </div>
+            <div class="stat"><div class="stat-label">Days Watered</div><div class="stat-value">${plant.daysWatered}</div></div>
+            <div class="stat"><div class="stat-label">Height (cm)</div><div class="stat-value">${plant.currentHeight}</div></div>
           </div>
           <div class="progress-container">
             <p style="color: var(--dark-green); font-weight: 600; margin-bottom: 0.5rem;">Health Progress</p>
@@ -268,65 +193,7 @@
       });
     }
 
-    document.getElementById('plantForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const newPlant = {
-        name: document.getElementById('plantName').value,
-        daysWatered: parseInt(document.getElementById('daysWatered').value),
-        currentHeight: parseFloat(document.getElementById('currentHeight').value)
-      };
-
-      plants.push(newPlant);
-      localStorage.setItem('plants', JSON.stringify(plants));
-
-      document.getElementById('plantForm').reset();
-      displayPlants();
-    });
-
     displayPlants();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
-    });
-
-    function getLocation() {
-      const errorDiv = document.getElementById('errorMsg');
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            document.getElementById('latitude').value = position.coords.latitude.toFixed(8);
-            document.getElementById('longitude').value = position.coords.longitude.toFixed(8);
-          },
-          () => alert('Unable to get your location')
-        );
-      } else {
-        alert('Geolocation is not supported by this browser.');
-      }
-    }
-
- ocument.addEventListener('DOMContentLoaded', ()=> {
-  document.getElementById('planted_date').value = new Date().toISOString().split('T')[0];
-});
-
-document.getElementById('plantForm').addEventListener('submit', (e)=>{
-  e.preventDefault();
-
-  const plantData = {
-    name: document.getElementById('plantName').value,
-    daysWatered: parseInt(document.getElementById('daysWatered').value) || 0,
-    currentHeight: parseFloat(document.getElementById('currentHeight').value) || 0,
-    latitude: parseFloat(document.getElementById('latitude').value) || 0,
-    longitude: parseFloat(document.getElementById('longitude').value) || 0,
-    planted_date: document.getElementById('planted_date').value,
-    photo_url: document.getElementById('photo_url').value || '',
-    created_at: firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  db.collection('plants').add(plantData)
-    .then(()=> { alert('Plant logged successfully! 🌿'); document.getElementById('plantForm').reset(); })
-    .catch((err)=> { console.error(err); alert('Failed to log plant'); });
-});
   </script>
 </body>
 </html>
