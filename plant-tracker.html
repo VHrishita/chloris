@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Firebase App & Firestore -->
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
 
@@ -26,7 +25,6 @@
   </script>
 
   <style>
-    /* Keep your original style exactly */
     .plant-form { max-width: 600px; margin: 0 auto; }
     .form-group { margin-bottom: 1.5rem; }
     .form-group label { display: block; margin-bottom: 0.5rem; color: var(--dark-green); font-weight: 600; }
@@ -194,17 +192,14 @@
     <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
     <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
     
-    <!-- Copyright line -->
     <p style="color: #888; font-size: 0.8rem; margin-top: 1rem;">
       © <span id="year"></span> Chloris — All Rights Reserved 🌎
     </p>
   </div>
 
   <script>
-    // Automatically update the year
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </footer>
-
 </body>
 </html>
