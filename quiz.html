@@ -28,7 +28,6 @@
       color: var(--dark-green);
     }
 
-    /* Floating leaves */
     .leaf {
       position: absolute;
       top: -50px;
@@ -43,7 +42,6 @@
       100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Glassy quiz box */
     main {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
@@ -143,7 +141,6 @@
       color: var(--dark-green);
     }
 
-    /* Back button */
     #back-home {
       position: absolute;
       top: 20px;
@@ -177,17 +174,14 @@
 </head>
 
 <body>
-  <!-- Back button -->
   <button id="back-home" onclick="window.location.href='features.html'">← Back</button>
 
-  <!-- Floating leaves -->
   <div class="leaf" style="left: 10%;">🍃</div>
   <div class="leaf" style="left: 30%; animation-delay: 2s;">🌿</div>
   <div class="leaf" style="left: 50%; animation-delay: 4s;">🍀</div>
   <div class="leaf" style="left: 70%; animation-delay: 1s;">🌱</div>
   <div class="leaf" style="left: 90%; animation-delay: 3s;">🍂</div>
 
-  <!-- Quiz Section -->
   <main>
     <h1>🌱 Daily Eco Quiz</h1>
     <div id="progressBarContainer">
@@ -312,18 +306,15 @@
     <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
     <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
     
-    <!-- Copyright line -->
     <p style="color: #888; font-size: 0.8rem; margin-top: 1rem;">
       © <span id="year"></span> Chloris — All Rights Reserved 🌎
     </p>
   </div>
 
   <script>
-    // Automatically update the year
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </footer>
 
-  
 </body>
 </html>
