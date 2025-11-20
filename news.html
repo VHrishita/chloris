@@ -30,7 +30,7 @@
         background-color: #1b5734;
     }
     .news-container-wrapper {
-        max-height: 70vh; /* height of scrollable area */
+        max-height: 70vh; 
         overflow-y: auto;
         padding-right: 10px;
     }
@@ -66,7 +66,6 @@
         color: #999999;
         margin-top: 10px;
     }
-    /* Optional: scrollbar styling */
     .news-container-wrapper::-webkit-scrollbar {
         width: 8px;
     }
@@ -75,7 +74,6 @@
         border-radius: 4px;
     }
 
-    /* Article view styles */
     #articleView {
         display: none;
         position: fixed;
@@ -146,7 +144,6 @@
     </div>
 </div>
 
-<!-- Article view -->
 <div id="articleView">
     <button class="back-button" onclick="closeArticle()">← Back to News</button>
     <div id="articleContent">
@@ -187,7 +184,6 @@ const articles = [
     }
 ];
 
-// Add click event to each news card
 const newsCards = document.querySelectorAll('.news-card');
 newsCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -199,7 +195,6 @@ newsCards.forEach(card => {
     });
 });
 
-// Close article view
 function closeArticle() {
     document.getElementById('articleView').style.display = 'none';
     document.getElementById('newsSection').style.display = 'block';
@@ -217,17 +212,14 @@ function closeArticle() {
     <p class="footer-text">Made by Group 17 for SDG 15 — Life on Land</p>
     <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">Building a sustainable future together</p>
     
-    <!-- Copyright line -->
     <p style="color: #888; font-size: 0.8rem; margin-top: 1rem;">
       © <span id="year"></span> Chloris — All Rights Reserved 🌎
     </p>
   </div>
 
   <script>
-    // Automatically update the year
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </footer>
-
 </body>
 </html>
