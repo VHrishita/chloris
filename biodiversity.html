@@ -187,10 +187,8 @@
       }
     ];
 
-    // Initialize map
     const map = L.map('map').setView([10, 20], 2);
 
-    // Add tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
